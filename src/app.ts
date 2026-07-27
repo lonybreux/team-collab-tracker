@@ -1,9 +1,10 @@
 import type { Request, Response } from 'express'
 import express from 'express'
 import cors, { type CorsOptions } from 'cors'
+import env from './config/env.js'
 
 const corsOptions: CorsOptions = {
-    origin: process.env.FRONTEND_URL,
+    origin: env.FRONTEND_URL,
     methods: ['GET','POST','PUT','PATCH','DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
