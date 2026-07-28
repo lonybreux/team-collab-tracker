@@ -8,9 +8,9 @@ datasource db {
 }
 
 model usuarios {
-  id                            String                    @id @db.Uuid
+  id                            String                    @id @default(uuid()) @db.Uuid
   nombre                        String                    @db.VarChar
-  email                         String                    @db.VarChar
+  email                         String                    @unique(map: "uq_email") @db.VarChar
   email_verificado              Boolean                   @default(false)
   token_verificacion            String?                   @db.VarChar
   token_verificacion_expires_at DateTime?                 @db.Timestamp(6)
@@ -21,7 +21,7 @@ model usuarios {
 }
 
 model usuarios_auth_providers {
-  id              String   @id(map: "untitled_table_213_pkey") @db.Uuid
+  id              String   @id(map: "untitled_table_213_pkey") @default(uuid()) @db.Uuid
   id_usuario      String   @db.Uuid
   provider        String   @db.VarChar
   provider_id     String?  @db.VarChar
