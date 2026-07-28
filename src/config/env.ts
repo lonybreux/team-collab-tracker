@@ -7,7 +7,8 @@ const envSchema = z.object({
     FRONTEND_URL: z.string().url(),
     CLIENT_ID: z.string().min(1),
     CLIENT_SECRET: z.string().min(1),
-    DATABASE_URL: z.string().url()
+    DATABASE_URL: z.string().url(),
+    RESEND_API_KEY: z.string().min(1)
 })
 
 
