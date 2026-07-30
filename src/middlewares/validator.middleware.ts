@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { ZodError, ZodObject } from "zod";
 
-export const schemaValidation = (schema: ZodObject) => (req: Request, res: Response, next: NextFunction) => {
+const schemaValidation = (schema: ZodObject) => (req: Request, res: Response, next: NextFunction) => {
     try {
         schema.parse(req.body)
 
@@ -18,3 +18,5 @@ export const schemaValidation = (schema: ZodObject) => (req: Request, res: Respo
         return
     }
 }
+
+export default schemaValidation

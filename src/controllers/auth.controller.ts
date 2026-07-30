@@ -29,7 +29,7 @@ export default class AuthController {
             return
         } catch(error) {
             res.status(500).json({
-                message: error instanceof Error ? error.message : 'Internal server error'
+                message: error instanceof Error ? error.message : 'error interno del sistema. Vuelva a intentar más tarde.'
             })
             return
         }
