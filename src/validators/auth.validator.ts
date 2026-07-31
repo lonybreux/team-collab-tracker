@@ -6,3 +6,8 @@ export const registrarSchema = z.object({
     contrasena: z.string().min(6,'La contraseña debe tener al menos 6 caracteres'),
     foto_perfil: z.url().nullable()
 })
+
+export const verificarEmailSchema = z.object({
+    token_verificacion: z.string().length(6, 'El código debe tener 6 dígitos'),
+    email: z.email('Formato de email inválido')
+})
