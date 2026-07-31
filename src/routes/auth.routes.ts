@@ -1,6 +1,6 @@
 import { Router } from "express";
 import schemaValidation from "../middlewares/validator.middleware.js";
-import { registrarSchema } from "../validators/auth.validator.js";
+import { registrarSchema, verificarEmailSchema } from "../validators/auth.validator.js";
 import AuthController from "../controllers/auth.controller.js";
 import AuthService from "../services/auth.service.js";
 import EmailService from "../services/email.service.js";
@@ -13,6 +13,6 @@ const authService = new AuthService(usuarioRepository, emailService)
 const authController = new AuthController(authService)
 
 router.post('/register', schemaValidation(registrarSchema), authController.register)
-
+router.post('/verificar-email', schemaValidation(verificarEmailSchema), authController.verificarEmail)
 
 export default router
