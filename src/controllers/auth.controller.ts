@@ -64,4 +64,37 @@ export default class AuthController {
             return
         }
     }
+
+    public login = async(req: Request, res: Response): Promise<void> => {
+        try {
+
+            const { email, contrasena } = req.body
+
+            const { usuario, token } = await this.authService.loginUsuarioLocal(email, contrasena)
+
+            const usuarioResponse: IUsuarioResponseDTO = {
+                id: usuario.id,
+                nombre: usuario.nombre,
+                email: usuario.email,
+                foto_perfil: usuario.foto_perfil,
+                email_verificado: usuario.email_verificado
+            }
+
+            res.json({
+                message: 'Login exitoso',
+                body: {
+                    usuario: usuarioResponse,
+                    token
+                }
+            })
+            return
+            
+        } catch(error) {
+            res.status(500).json({
+                message: error instanceof Error ? error.message : 'error interno del sistema. Vuelva a intentar más tarde.'
+            })
+            return
+        }
+    }
+
 }

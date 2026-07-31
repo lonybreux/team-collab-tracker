@@ -11,3 +11,8 @@ export const verificarEmailSchema = z.object({
     token_verificacion: z.string().length(6, 'El código debe tener 6 dígitos'),
     email: z.email('Formato de email inválido')
 })
+
+export const loginSchema = z.object({
+    email: z.email('Formato de email inválido'),
+    contrasena: z.string().min(1, 'La contraseña es requerida')
+})
