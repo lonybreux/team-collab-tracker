@@ -35,4 +35,33 @@ export default class AuthController {
         }
         
     }
+
+    public verificarEmail = async(req: Request, res: Response): Promise<void> => {
+        try {
+
+            const { token_verificacion, email } = req.body
+
+            const usuarioVerified: IUsuario = await this.authService.verificarEmail(token_verificacion, email)
+
+            const usuarioResponse: IUsuarioResponseDTO = {
+                id: usuarioVerified.id,
+                nombre: usuarioVerified.nombre,
+                email: usuarioVerified.email,
+                foto_perfil: usuarioVerified.foto_perfil,
+                email_verificado: usuarioVerified.email_verificado
+            }
+
+            res.json({
+                message: 'Usuario verificado con éxito',
+                body: usuarioResponse
+            })
+            return
+
+        } catch(error) {
+            res.status(500).json({
+                message: error instanceof Error ? error.message : 'error interno del sistema. Vuelva a intentar más tarde.'
+            })
+            return
+        }
+    }
 }
