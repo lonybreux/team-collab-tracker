@@ -35,4 +35,18 @@ export default class AuthService {
         return usuarioCreated
     }
 
+    public async verificarEmail(token_verificacion: string, email: string): Promise<IUsuario> {
+
+        const usuario = await this.usuarioRepository.findByEmail(email)
+
+        if(!usuario) throw new Error('Usuario no registrado')
+
+        if(token_verificacion !== usuario.token_verificacion) throw new Error('El token de verificación no coincide')
+
+        if(!usuario.token_verificacion_expires_at || usuario.token_verificacion_expires_at < new Date()) throw new Error('El código de verificación ha expirado')
+
+        return await this.usuarioRepository.updateEmailVerificado(usuario.email)
+        
+    }
+
 }
