@@ -1,9 +1,11 @@
 import type { IUsuario, IUsuarioCrearDTO } from "../models/usuario.model.js";
 import type UsuarioRepository from "../repositories/usuario.repository.js";
-import type EmailService from "./email.service.js";
+import EmailService from "./email.service.js";
 
+import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import crypto from 'node:crypto'
+import env from "../config/env.js";
 
 
 export default class AuthService {
@@ -47,6 +49,43 @@ export default class AuthService {
 
         return await this.usuarioRepository.updateEmailVerificado(usuario.email)
         
+    }
+
+    public async loginUsuarioLocal(email: string, contrasena: string): Promise<{usuario: IUsuario, token: string}> {
+
+        const usuarioExists = await this.usuarioRepository.findByEmailConAuthProviders(email)
+
+        if(!usuarioExists) throw new Error('Credenciales inválidas')
+        
+        if(!usuarioExists.email_verificado) throw new Error('cuenta no verificada')
+        
+        const authLocal = usuarioExists.usuarios_auth_providers.find(p => p.provider === 'LOCAL')
+
+        if(!authLocal || !authLocal.contrasena_hash) throw new Error('Esta cuenta no tiene un método de acceso local registrado')
+        
+        const contrasenaValida = await bcrypt.compare(contrasena, authLocal.contrasena_hash)
+
+        if(!contrasenaValida) throw new Error('Credenciales inválidas')
+
+
+        const usuarioCleaned: IUsuario = {
+            id: usuarioExists.id,
+            nombre: usuarioExists.nombre,
+            email: usuarioExists.email,
+            email_verificado: usuarioExists.email_verificado,
+            token_verificacion: usuarioExists.token_verificacion,
+            token_verificacion_expires_at: usuarioExists.token_verificacion_expires_at,
+            foto_perfil: usuarioExists.foto_perfil,
+            created_at: usuarioExists.created_at,
+            updated_at: usuarioExists.updated_at
+        }
+
+        const token = jwt.sign({id: usuarioCleaned.id}, env.JWT_SECRET, {expiresIn: '7d'})
+        
+        return {
+            usuario: usuarioCleaned,
+            token
+        }
     }
 
 }
