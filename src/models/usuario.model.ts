@@ -37,7 +37,7 @@ export interface IUsuarioResponseDTO {
     id: string
     nombre: string
     email: string
-    foto_perfil?: string
+    foto_perfil: string | null
     email_verificado: boolean
 }
 
