@@ -1,6 +1,7 @@
 import type IRepository from "./repository.interface.js";
 import prisma from "../config/db.js";
 import type { IUsuario, IUsuarioCrearDTO, IUsuarioConAuthProviders } from "../models/usuario.model.js";
+import { string } from "zod";
 
 
 export default class UsuarioRepository implements IRepository<IUsuario> {
@@ -48,6 +49,20 @@ export default class UsuarioRepository implements IRepository<IUsuario> {
 
             return usuario
         })
+    }
+
+    public async createAuthProviderLocal(idUsuario: string, contrasenaHash: string): Promise<void> {
+
+    
+        await prisma.usuarios_auth_providers.create({
+            data: {
+                id_usuario: idUsuario,
+                provider: 'LOCAL',
+                contrasena_hash: contrasenaHash
+            }
+        })
+
+        return
     }
 
     public async createUsuarioGoogle(entity: Omit<IUsuarioCrearDTO, 'contrasena'> & {providerId: string}): Promise<IUsuario> {
