@@ -74,6 +74,29 @@ export default class UsuarioRepository implements IRepository<IUsuario> {
         })
     }
 
+    public async createAuthProviderGoogle(email: string, providerId: string): Promise<IUsuario> {
+
+        return await prisma.$transaction(async (tx) => {
+            
+            const usuario = await tx.usuarios.update({
+                where: {email},
+                data: {
+                    email_verificado: true,
+                }
+            })
+
+            await tx.usuarios_auth_providers.create({
+                data: {
+                    id_usuario: usuario.id,
+                    provider: 'GOOGLE',
+                    provider_id: providerId
+                }
+            })
+
+            return usuario
+        })
+    }
+
     public async updateEmailVerificado(email: string): Promise<IUsuario> {
         
         const usuarioVerified = await prisma.usuarios.update({
