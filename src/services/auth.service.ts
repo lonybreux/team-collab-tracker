@@ -14,10 +14,20 @@ export default class AuthService {
 
     public async registrarUsuarioLocal(usuario: IUsuarioCrearDTO): Promise<IUsuario> {
 
-        const usuarioExists = await this.usuarioRepository.findByEmail(usuario.email)
+        const usuarioExists = await this.usuarioRepository.findByEmailConAuthProviders(usuario.email)
 
-        if(usuarioExists) throw new Error('El usuario ya existe')
+        if(usuarioExists) {
 
+            const authLocal = usuarioExists.usuarios_auth_providers.find(p => p.provider === 'LOCAL')
+
+            if(authLocal) throw new Error('El usuario ya existe')
+
+            const contrasenaHash = await bcrypt.hash(usuario.contrasena, 10)
+            await this.usuarioRepository.createAuthProviderLocal(usuarioExists.id, contrasenaHash)
+
+            return usuarioExists
+        }
+       
         const contrasenaHash = await bcrypt.hash(usuario.contrasena, 10)
 
         const tokenVerificacion = crypto.randomInt(100000, 999999).toString()
