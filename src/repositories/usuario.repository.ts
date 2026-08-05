@@ -1,7 +1,6 @@
 import type IRepository from "./repository.interface.js";
 import prisma from "../config/db.js";
 import type { IUsuario, IUsuarioCrearDTO, IUsuarioConAuthProviders } from "../models/usuario.model.js";
-import { string } from "zod";
 
 
 export default class UsuarioRepository implements IRepository<IUsuario> {

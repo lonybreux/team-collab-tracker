@@ -98,4 +98,72 @@ export default class AuthService {
         }
     }
 
+    public async accesoGoogle(usuario: IUsuarioCrearDTO, providerId: string): Promise<{usuario: IUsuario, token: string}> {
+
+        const usuarioExists = await this.usuarioRepository.findByEmailConAuthProviders(usuario.email)
+        
+
+        if(usuarioExists) {
+            const authGoogle = usuarioExists.usuarios_auth_providers.find(p => p.provider === 'GOOGLE')
+            const token = jwt.sign({id: usuarioExists.id}, env.JWT_SECRET, {expiresIn: '7d'})
+
+            if(authGoogle) {
+
+                const usuarioCleaned: IUsuario = {
+                    id: usuarioExists.id,
+                    nombre: usuarioExists.nombre,
+                    email: usuarioExists.email,
+                    email_verificado: usuarioExists.email_verificado,
+                    token_verificacion: usuarioExists.token_verificacion,
+                    token_verificacion_expires_at: usuarioExists.token_verificacion_expires_at,
+                    foto_perfil: usuarioExists.foto_perfil,
+                    created_at: usuarioExists.created_at,
+                    updated_at: usuarioExists.updated_at
+                }
+
+                return {
+                    usuario: usuarioCleaned,
+                    token
+                }
+            } else {
+
+                const usuarioAuthGoogle = await this.usuarioRepository.createAuthProviderGoogle(usuarioExists.email, providerId)
+
+                return {
+                    usuario: usuarioAuthGoogle,
+                    token
+                }
+
+            }
+        }
+
+        const usuarioCreated = await this.usuarioRepository.createUsuarioGoogle({
+            nombre: usuario.nombre,
+            email: usuario.email,
+            foto_perfil: usuario.foto_perfil,
+            providerId
+        })
+
+        const usuarioCleaned: IUsuario = {
+            id: usuarioCreated.id,
+            nombre: usuarioCreated.nombre,
+            email: usuarioCreated.email,
+            email_verificado: usuarioCreated.email_verificado,
+            token_verificacion: usuarioCreated.token_verificacion,
+            token_verificacion_expires_at: usuarioCreated.token_verificacion_expires_at,
+            foto_perfil: usuarioCreated.foto_perfil,
+            created_at: usuarioCreated.created_at,
+            updated_at: usuarioCreated.updated_at
+        }
+
+        const token = jwt.sign({id: usuarioCleaned.id}, env.JWT_SECRET, {expiresIn: '7d'})
+
+        return {
+            usuario: usuarioCleaned,
+            token
+        }
+
+
+    }
+
 }
