@@ -90,7 +90,7 @@ export default class AuthService {
             updated_at: usuarioExists.updated_at
         }
 
-        const token = jwt.sign({id: usuarioCleaned.id}, env.JWT_SECRET, {expiresIn: '7d'})
+        const token = jwt.sign({id: usuarioCleaned.id}, env.JWT_SECRET, {expiresIn: '8h'})
         
         return {
             usuario: usuarioCleaned,
