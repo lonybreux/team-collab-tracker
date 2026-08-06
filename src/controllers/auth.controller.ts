@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 
 import AuthService from "../services/auth.service.js";
 import type { IUsuario, IUsuarioCrearDTO, IUsuarioResponseDTO } from "../models/usuario.model.js";
+import env from "../config/env.js";
 
 export default class AuthController {
 
@@ -80,11 +81,17 @@ export default class AuthController {
                 email_verificado: usuario.email_verificado
             }
 
+            res.cookie('session', token, {
+                httpOnly: true,
+                secure: env.NODE_ENV === 'production',
+                sameSite: 'lax',
+                maxAge: 8 * 60 * 60 * 1000
+            })
+
             res.json({
                 message: 'Login exitoso',
                 body: {
                     usuario: usuarioResponse,
-                    token
                 }
             })
             return
