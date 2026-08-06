@@ -10,7 +10,8 @@ const envSchema = z.object({
     GOOGLE_REDIRECT_URI: z.url(),
     DATABASE_URL: z.url(),
     RESEND_API_KEY: z.string().min(1),
-    JWT_SECRET: z.string().min(32)
+    JWT_SECRET: z.string().min(32),
+    NODE_ENV: z.string().min(1)
 })
 
 
