@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import AuthService from "../services/auth.service.js";
 import type { IUsuario, IUsuarioCrearDTO, IUsuarioResponseDTO } from "../models/usuario.model.js";
 import env from "../config/env.js";
+import { AppError } from "../errors/app.error.js";
 
 export default class AuthController {
 
@@ -29,8 +30,16 @@ export default class AuthController {
             })
             return
         } catch(error) {
+
+            if(error instanceof AppError) {
+                res.status(error.statusCode).json({
+                    message: error.message
+                })
+                return
+            }
+
             res.status(500).json({
-                message: error instanceof Error ? error.message : 'error interno del sistema. Vuelva a intentar más tarde.'
+                message: 'error interno del sistema. Vuelva a intentar más tarde.'
             })
             return
         }
