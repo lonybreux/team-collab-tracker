@@ -1,4 +1,5 @@
 import type { IUsuario, IUsuarioCrearDTO } from "../models/usuario.model.js";
+import { UserAlreadyExistsError } from "../errors/app.error.js";
 import type UsuarioRepository from "../repositories/usuario.repository.js";
 import EmailService from "./email.service.js";
 
@@ -20,7 +21,7 @@ export default class AuthService {
 
             const authLocal = usuarioExists.usuarios_auth_providers.find(p => p.provider === 'LOCAL')
 
-            if(authLocal) throw new Error('El usuario ya existe')
+            if(authLocal) throw new UserAlreadyExistsError()
 
             const contrasenaHash = await bcrypt.hash(usuario.contrasena, 10)
             await this.usuarioRepository.createAuthProviderLocal(usuarioExists.id, contrasenaHash)
