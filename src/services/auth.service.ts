@@ -1,5 +1,5 @@
 import type { IUsuario, IUsuarioCrearDTO } from "../models/usuario.model.js";
-import { InvalidVerificationTokenError, UserAlreadyExistsError, UserNotFoundError } from "../errors/app.error.js";
+import { AccountNotVerifiedError, InvalidAuthMethodError, InvalidCredentialsError, InvalidVerificationTokenError, UserAlreadyExistsError, UserNotFoundError } from "../errors/app.error.js";
 import type UsuarioRepository from "../repositories/usuario.repository.js";
 import EmailService from "./email.service.js";
 
@@ -66,17 +66,17 @@ export default class AuthService {
 
         const usuarioExists = await this.usuarioRepository.findByEmailConAuthProviders(email)
 
-        if(!usuarioExists) throw new Error('Credenciales inválidas')
+        if(!usuarioExists) throw new InvalidCredentialsError()
         
-        if(!usuarioExists.email_verificado) throw new Error('cuenta no verificada')
+        if(!usuarioExists.email_verificado) throw new AccountNotVerifiedError()
         
         const authLocal = usuarioExists.usuarios_auth_providers.find(p => p.provider === 'LOCAL')
 
-        if(!authLocal || !authLocal.contrasena_hash) throw new Error('Esta cuenta no tiene un método de acceso local registrado')
+        if(!authLocal || !authLocal.contrasena_hash) throw new InvalidAuthMethodError()
         
         const contrasenaValida = await bcrypt.compare(contrasena, authLocal.contrasena_hash)
 
-        if(!contrasenaValida) throw new Error('Credenciales inválidas')
+        if(!contrasenaValida) throw new InvalidCredentialsError()
 
 
         const usuarioCleaned: IUsuario = {

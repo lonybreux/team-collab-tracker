@@ -27,4 +27,20 @@ export class InvalidVerificationTokenError extends AppError {
     }
 }
 
+export class InvalidCredentialsError extends AppError {
+    constructor(message: string = 'Credenciales inválidas') {
+        super(message, 401)
+    }
+}
 
+export class AccountNotVerifiedError extends AppError {
+    constructor(message: string = 'La cuenta aún no ha sido verificada') {
+        super(message, 403)
+    }
+}
+
+export class InvalidAuthMethodError extends AppError {
+    constructor(message: string = 'Esta cuenta se registró utilizando otro método de acceso (ej. Google)') {
+        super(message, 400)
+    }
+}
