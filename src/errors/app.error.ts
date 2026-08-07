@@ -12,3 +12,19 @@ export class UserAlreadyExistsError extends AppError {
         super(message, 409)
     }
 }
+
+export class UserNotFoundError extends AppError {
+    
+    constructor(message: string = 'Usuario no encontrado') {
+        super(message, 404)
+    }
+}
+
+export class InvalidVerificationTokenError extends AppError {
+    
+    constructor(message: string = 'El token de verificación no es válido') {
+        super(message, 400)
+    }
+}
+
+

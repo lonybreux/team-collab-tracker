@@ -1,5 +1,5 @@
 import type { IUsuario, IUsuarioCrearDTO } from "../models/usuario.model.js";
-import { UserAlreadyExistsError } from "../errors/app.error.js";
+import { InvalidVerificationTokenError, UserAlreadyExistsError, UserNotFoundError } from "../errors/app.error.js";
 import type UsuarioRepository from "../repositories/usuario.repository.js";
 import EmailService from "./email.service.js";
 
@@ -52,11 +52,11 @@ export default class AuthService {
 
         const usuario = await this.usuarioRepository.findByEmail(email)
 
-        if(!usuario) throw new Error('Usuario no registrado')
+        if(!usuario) throw new UserNotFoundError()
 
-        if(token_verificacion !== usuario.token_verificacion) throw new Error('El token de verificación no coincide')
+        if(token_verificacion !== usuario.token_verificacion) throw new InvalidVerificationTokenError('El token de verificación no coincide')
 
-        if(!usuario.token_verificacion_expires_at || usuario.token_verificacion_expires_at < new Date()) throw new Error('El código de verificación ha expirado')
+        if(!usuario.token_verificacion_expires_at || usuario.token_verificacion_expires_at < new Date()) throw new InvalidVerificationTokenError('El código de verificación ha expirado')
 
         return await this.usuarioRepository.updateEmailVerificado(usuario.email)
         
