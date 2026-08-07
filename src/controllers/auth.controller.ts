@@ -101,7 +101,7 @@ export default class AuthController {
             res.cookie('session', token, {
                 httpOnly: true,
                 secure: env.NODE_ENV === 'production',
-                sameSite: 'lax',
+                sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax',
                 maxAge: 8 * 60 * 60 * 1000
             })
 
@@ -123,7 +123,7 @@ export default class AuthController {
             }
 
             res.status(500).json({
-                message: error instanceof Error ? error.message : 'error interno del sistema. Vuelva a intentar más tarde.'
+                message: 'error interno del sistema. Vuelva a intentar más tarde.'
             })
             return
         }
@@ -140,6 +140,7 @@ export default class AuthController {
         res.status(200).json({
             message: 'Sesión cerrada correctamente'
         })
+        return
     }
 
 }
