@@ -129,4 +129,17 @@ export default class AuthController {
         }
     }
 
+    public logout = async(_req: Request, res: Response): Promise<void> => {
+        
+        res.clearCookie('session', {
+            httpOnly: true,
+            secure: env.NODE_ENV === 'production',
+            sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax'
+        })
+        
+        res.status(200).json({
+            message: 'Sesión cerrada correctamente'
+        })
+    }
+
 }
