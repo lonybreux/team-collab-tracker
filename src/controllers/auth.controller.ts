@@ -114,6 +114,14 @@ export default class AuthController {
             return
             
         } catch(error) {
+
+            if(error instanceof AppError) {
+                res.status(error.statusCode).json({
+                    message: error.message
+                })
+                return
+            }
+
             res.status(500).json({
                 message: error instanceof Error ? error.message : 'error interno del sistema. Vuelva a intentar más tarde.'
             })
