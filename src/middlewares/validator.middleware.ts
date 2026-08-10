@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { ZodError, ZodObject } from "zod";
 
-type TargetProperty = 'body' | 'query' | 'params'
+type TargetProperty = 'body' | 'params'
 
 const schemaValidation = (schema: ZodObject, target: TargetProperty = 'body') => (req: Request, res: Response, next: NextFunction) => {
     try {
