@@ -180,4 +180,70 @@ export default class AuthController {
         }
     }
 
+    public googleCallback = async (req: Request, res: Response): Promise<void> => {
+        try {
+
+            const { code, state } = req.query as { code: string, state: string}
+
+            if(!req.cookies['state'] || state !== req.cookies['state']) {
+                res.status(403).json({
+                    message: 'Estado de autenticación inválido'
+                })
+                return
+            }
+
+            res.clearCookie('state',{
+                httpOnly: true,
+                secure: env.NODE_ENV === 'production',
+                sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax'
+            })
+
+            const { tokens } = await client.getToken(code)
+
+            if(!tokens.id_token) {
+                res.status(400).json({
+                    message: 'No se obtuvo id_token de Google'
+                })
+                return
+            }
+
+            const ticket = await client.verifyIdToken({
+                idToken: tokens.id_token,
+                audience: env.GOOGLE_CLIENT_ID
+            })
+
+            const payload = ticket.getPayload()
+
+            if(!payload || !payload.email || !payload.sub) {
+                res.status(400).json({
+                    message: 'Información de perfil incompleta recibida de Google'
+                })
+                return
+            }
+
+            const usuarioGoogle: IUsuarioCrearDTO = {
+                nombre: payload.name || 'UsuarioGoogle',
+                email: payload.email,
+                contrasena: '',
+                foto_perfil: payload.picture || null
+            }
+
+            const { token } = await this.authService.accesoGoogle(usuarioGoogle, payload.sub)
+
+            res.cookie('session', token,{
+                httpOnly: true,
+                secure: env.NODE_ENV === 'production',
+                sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax',
+                maxAge: 8 * 60 * 60 * 1000
+            })
+
+            res.redirect(`${env.FRONTEND_URL}/profile`)
+        } catch(error) {
+            res.status(500).json({
+                message: error instanceof Error ? error.message : 'error interno del sistema. Vuelva a intentar más tarde.'
+            })
+            return
+        }
+    }
+
 }
