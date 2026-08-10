@@ -16,3 +16,8 @@ export const loginSchema = z.object({
     email: z.email('Formato de email inválido'),
     contrasena: z.string().min(1, 'La contraseña es requerida')
 })
+
+export const googleCallbackSchema = z.object({
+    code: z.string().min(1, 'Code inválido'),
+    state: z.string().length(64, 'State inválido')
+})
