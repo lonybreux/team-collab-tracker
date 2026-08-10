@@ -5,6 +5,15 @@ import type { IUsuario, IUsuarioCrearDTO, IUsuarioResponseDTO } from "../models/
 import env from "../config/env.js";
 import { AppError } from "../errors/app.error.js";
 
+import { OAuth2Client, type GenerateAuthUrlOpts } from "google-auth-library";
+import crypto from 'node:crypto'
+
+const client = new OAuth2Client(
+    env.GOOGLE_CLIENT_ID,
+    env.GOOGLE_CLIENT_SECRET,
+    env.GOOGLE_REDIRECT_URI
+)
+
 export default class AuthController {
 
     constructor(private authService: AuthService) {}
@@ -141,6 +150,34 @@ export default class AuthController {
             message: 'Sesión cerrada correctamente'
         })
         return
+    }
+
+    public google = async(_req: Request, res: Response): Promise<void> =>  {
+        try {
+
+            const state = crypto.randomBytes(32).toString('hex')
+
+            res.cookie('state', state, {
+                httpOnly: true,
+                secure: env.NODE_ENV === 'production',
+                maxAge: 10 * 60 * 1000,
+                sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax' 
+            })
+
+            const generateAuthOptions: GenerateAuthUrlOpts = {
+                scope: ['profile','email','openid'],
+                state
+            }
+
+            const url = client.generateAuthUrl(generateAuthOptions)
+
+            res.redirect(url)
+        } catch(error) {
+            res.status(500).json({
+                message: error instanceof Error ? error.message : 'error interno del sistema. Vuelva a intentar más tarde.'
+            })
+            return
+        }
     }
 
 }
