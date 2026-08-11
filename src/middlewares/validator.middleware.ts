@@ -1,9 +1,12 @@
 import type { Request, Response, NextFunction } from "express";
 import { ZodError, ZodObject } from "zod";
 
-const schemaValidation = (schema: ZodObject) => (req: Request, res: Response, next: NextFunction) => {
+type TargetProperty = 'body' | 'params'
+
+const schemaValidation = (schema: ZodObject, target: TargetProperty = 'body') => (req: Request, res: Response, next: NextFunction) => {
     try {
-        schema.parse(req.body)
+        
+        req[target] = schema.parse(req[target])
 
         next()
     } catch(error) {

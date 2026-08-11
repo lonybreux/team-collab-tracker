@@ -4,12 +4,14 @@ dotenv.config()
 
 const envSchema = z.object({
     PORT: z.coerce.number().default(3000),
-    FRONTEND_URL: z.string().url(),
-    CLIENT_ID: z.string().min(1),
-    CLIENT_SECRET: z.string().min(1),
-    DATABASE_URL: z.string().url(),
+    FRONTEND_URL: z.url(),
+    GOOGLE_CLIENT_ID: z.string().min(1),
+    GOOGLE_CLIENT_SECRET: z.string().min(1),
+    GOOGLE_REDIRECT_URI: z.url(),
+    DATABASE_URL: z.url(),
     RESEND_API_KEY: z.string().min(1),
-    JWT_SECRET: z.string().min(32)
+    JWT_SECRET: z.string().min(32),
+    NODE_ENV: z.string().min(1)
 })
 
 

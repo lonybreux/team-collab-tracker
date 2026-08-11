@@ -15,5 +15,7 @@ const authController = new AuthController(authService)
 router.post('/register', schemaValidation(registrarSchema), authController.register)
 router.post('/verificar-email', schemaValidation(verificarEmailSchema), authController.verificarEmail)
 router.post('/login',schemaValidation(loginSchema), authController.login)
+router.get('/google', authController.google)
+router.get('/google/callback', authController.googleCallback)
 
 export default router

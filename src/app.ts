@@ -1,6 +1,8 @@
 import type { Request, Response } from 'express'
 import express from 'express'
 import cors, { type CorsOptions } from 'cors'
+import cookieParser from 'cookie-parser'
+
 import env from './config/env.js'
 import authRoutes from './routes/auth.routes.js'
 
@@ -14,8 +16,10 @@ const corsOptions: CorsOptions = {
 
 const app = express()
 
+
 app.use(cors(corsOptions))
 app.use(express.json())
+app.use(cookieParser())
 
 app.use('/api/auth', authRoutes)
 
