@@ -237,7 +237,7 @@ export default class AuthController {
                 maxAge: 8 * 60 * 60 * 1000
             })
 
-            res.redirect(`${env.FRONTEND_URL}/profile`)
+            res.redirect(`${env.FRONTEND_URL}/views/profile.html`)
         } catch(error) {
             res.status(500).json({
                 message: error instanceof Error ? error.message : 'error interno del sistema. Vuelva a intentar más tarde.'
