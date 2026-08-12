@@ -1,4 +1,4 @@
-/node_modules
-/dist
+backend/node_modules
+backend/dist
 .env
-/src/generated/prisma
+backend/src/generated/prisma
