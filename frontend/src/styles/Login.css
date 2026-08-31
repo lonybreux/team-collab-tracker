@@ -2,7 +2,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 60px 0 60px;
+    padding: 0 60px;
+    border-bottom: 1px solid oklab(0.398797 -0.0290067 -0.0361916 / 0.1);
+}
+
+.login-header span {
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .register-redirect-div {
@@ -10,4 +16,198 @@
     justify-content: center;
     align-items: center;
     gap: 6px;
+}
+
+.register-redirect-div p, a{
+    font-size: 14px;
+}
+
+.register-redirect-div a {
+    text-decoration: none;
+    color: #F3E308;
+}
+
+.login-content {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 60px;
+}
+
+
+
+.login-info-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    padding: 32px;
+    background-color: oklab(0.398797 -0.0290067 -0.0361916 / 0.05);
+    border: 1px solid oklab(0.398797 -0.0290067 -0.0361916 / 0.1);
+    border-radius: 22px;
+}
+
+.login-info-div h1 {
+    margin: 0;
+    font-size: 60px;
+    font-weight: 600;
+    line-height: 1em;
+    letter-spacing: -0.04em;
+    color: rgb(44, 76, 92);
+}
+
+.login-info-div p {
+    margin-top: 24px;
+    font-size: 18px;
+    line-height: 1.78em;
+    letter-spacing: 0em;
+    color: rgb(76, 96, 107);
+}
+
+.login-info-div ul {
+    margin-top: 40px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    list-style: none;
+}
+
+.login-info-div li {
+    font-size: 14px;
+    font-weight: 500;
+    color: oklab(0.398797 -0.0290067 -0.0361916 / 0.8); 
+}
+
+.login-info-div li i{
+    color: rgb(243, 227, 8);
+}
+
+.login-form-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 35%;
+    padding: 32px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid oklab(0.799748 -0.0066193 -0.0049336 / 0.5);
+    border-radius: 18px;
+    box-shadow: 0 4px 6px 0px rgba(0, 0, 0, 0.1);
+}
+
+.login-form-header {
+    display: flex;
+    margin-bottom: 32px;
+    flex-direction: column;
+}
+
+
+.login-form-header p{
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.43em;
+}
+
+.login-form-header-short-message {
+    margin: 0;
+    color: rgb(243, 227, 8);
+}
+
+.login-form-header-desc {
+    margin-top: 8px;
+    margin-bottom: 0;
+    color: rgb(76, 96, 107);
+}
+
+
+.login-form-header h2 {
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.33em;
+    letter-spacing: -0.025em;
+    color: rgb(44, 76, 92);
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-form div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.login-form input {
+    font-size: 14px;
+    color: rgb(44, 76, 92);
+    background-color: rgb(244, 245, 245);
+    padding: 12px;
+    border: 1px solid rgb(211, 217, 219);
+    border-radius: 10px;
+}
+
+.login-form button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(44, 76, 92);
+    background-color: rgb(243, 227, 8);
+    border: 1px solid rgb(211, 217, 219);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.login-form label {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.divisor-div {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+.divisor-div p {
+    padding: 0 15px;
+    color: rgb(76, 96, 107);
+    font-size: 12px;
+}
+
+.divisor-div::before,
+.divisor-div::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.google-access-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgb(44, 76, 92);
+    cursor: pointer;
+    background-color: rgb(230, 233, 234);
+    border: 1px solid rgb(211, 217, 219);
+    border-radius: 10px;
+}
+
+.google-access-btn img {
+    height: 16px;
+    width: 16px;
 }

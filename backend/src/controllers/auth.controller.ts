@@ -166,7 +166,8 @@ export default class AuthController {
 
             const generateAuthOptions: GenerateAuthUrlOpts = {
                 scope: ['profile','email','openid'],
-                state
+                state,
+                prompt: 'consent'
             }
 
             const url = client.generateAuthUrl(generateAuthOptions)
@@ -237,7 +238,7 @@ export default class AuthController {
                 maxAge: 8 * 60 * 60 * 1000
             })
 
-            res.redirect(`${env.FRONTEND_URL}/views/profile.html`)
+            res.redirect(`${env.FRONTEND_URL}/dashboard`)
         } catch(error) {
             res.status(500).json({
                 message: error instanceof Error ? error.message : 'error interno del sistema. Vuelva a intentar más tarde.'

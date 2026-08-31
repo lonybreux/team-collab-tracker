@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import '../styles/Login.css'
 import { useState } from "react"
+import googleIcon from '../assets/google-icon.svg'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -39,7 +40,6 @@ export const Login = () => {
                 setError(data.message)
             } else {
                 navigate('/dashboard')
-                
             }
             
         } catch(error) {
@@ -70,41 +70,46 @@ export const Login = () => {
 
             <div className="login-content">
                 <div className="login-info-div">
-                    <h1>El trabajo en equipo, más claro.</h1>
-                    <p>Coordina proyectos, reparte tareas y llega a cada entrega con todo bajo control.</p>
+                    <h1>El trabajo en <br /> equipo, más claro.</h1>
+                    <p>Coordina proyectos, reparte tareas y llega a cada <br /> entrega con todo bajo control.</p>
 
                     <ul className="login-info-list">
-                        <li>Un solo espacio para cada proyecto</li>
-                        <li>Menos reuniones, más avances</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Un solo espacio para cada proyecto</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Menos reuniones, más avances</li>
                     </ul>
                 </div>
 
                 <div className="login-form-card">
                     <div className="login-form-header">
-                        <p>Qué bueno verte</p>
+                        <p className="login-form-header-short-message">Qué bueno verte</p>
                         <h2>Inicia sesión</h2>
-                        <p>Continúa donde lo dejaste con tu equipo.</p>
+                        <p className="login-form-header-desc">Continúa donde lo dejaste con tu equipo.</p>
                     </div>
 
                     <form className="login-form" onSubmit={handleSubmit}>
-                        <label htmlFor="email">Correo</label>
-                        <input type="email" id="email" value={email} onChange={(e) => handleChange(e, setEmail)} placeholder="tucorreo@email.com" />
-
-                        <label htmlFor="password">Contraseña</label>
-                        <input type="password" id="password" value={contrasena} onChange={(e) => handleChange(e, setContrasena)} placeholder="••••••••" />
+                        <div>
+                            <label htmlFor="email">Correo</label>
+                            <input type="email" id="email" value={email} onChange={(e) => handleChange(e, setEmail)} placeholder="tucorreo@email.com" />
+                        </div>
+                       
+                        <div>
+                            <label htmlFor="password">Contraseña</label>
+                            <input type="password" id="password" value={contrasena} onChange={(e) => handleChange(e, setContrasena)} placeholder="••••••••" />
+                        </div>
+                        
 
 
                         {error && <p>{error}</p>}
-                        <button type="submit" disabled={loading} >{loading ? 'Iniciando sesión...' : 'Iniciar sesión'}</button>
+                        <button type="submit" disabled={loading} >{loading ? 'Iniciando sesión...' : 'Iniciar sesión'}<i class="fa-solid fa-arrow-right"></i></button>
 
                         
                     </form>
 
-                    <div>
-                        o continúa con  
+                    <div className="divisor-div">
+                        <p>o continúa con </p> 
                     </div>
 
-                    <button onClick={handleGoogleAccess}>Google</button>
+                    <button onClick={handleGoogleAccess} className="google-access-btn"><img src={googleIcon} alt="Google-icon" /> Google</button>
 
                 </div>
             </div>
