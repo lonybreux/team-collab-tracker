@@ -38,8 +38,8 @@ model proyectos {
   creado_por         String               @db.Uuid
   titulo             String               @db.VarChar(255)
   curso_asignatura   String?              @db.VarChar(100)
-  created_at         DateTime?            @default(now()) @db.Timestamp(6)
-  updated_at         DateTime?            @default(now()) @db.Timestamp(6)
+  created_at         DateTime             @default(now()) @db.Timestamp(6)
+  updated_at         DateTime             @default(now()) @db.Timestamp(6)
   usuarios           usuarios             @relation(fields: [creado_por], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_proyectos_usuarios")
   usuarios_proyectos usuarios_proyectos[]
 }

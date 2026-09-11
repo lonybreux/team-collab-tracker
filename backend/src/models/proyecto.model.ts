@@ -6,3 +6,8 @@ export interface IProyecto {
     created_at: Date
     updated_at: Date
 }
+
+export interface IProyectoCrearDTO {
+    titulo: string
+    curso_asignatura: string | null
+}
