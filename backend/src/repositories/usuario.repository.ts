@@ -1,4 +1,5 @@
 import type IRepository from "./repository.interface.js";
+import { Prisma } from "@prisma/client/extension";
 import prisma from "../config/db.js";
 import type { IUsuario, IUsuarioCrearDTO, IUsuarioConAuthProviders } from "../models/usuario.model.js";
 
@@ -27,7 +28,7 @@ export default class UsuarioRepository implements IRepository<IUsuario> {
     public async createUsuarioLocal(entity: Omit<IUsuarioCrearDTO, 'contrasena'> & 
         {contrasenaHash: string, tokenVerificacion: string, tokenVerificacionExpiresAt: Date}): Promise<IUsuario> {
 
-        return await prisma.$transaction(async (tx) => {
+        return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const usuario = await tx.usuarios.create({
                 data: {
                     nombre: entity.nombre,
@@ -66,7 +67,7 @@ export default class UsuarioRepository implements IRepository<IUsuario> {
 
     public async createUsuarioGoogle(entity: Omit<IUsuarioCrearDTO, 'contrasena'> & {providerId: string}): Promise<IUsuario> {
 
-        return await prisma.$transaction(async (tx) => {
+        return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const usuario = await tx.usuarios.create({
                 data: {
                     nombre: entity.nombre,
@@ -90,7 +91,7 @@ export default class UsuarioRepository implements IRepository<IUsuario> {
 
     public async createAuthProviderGoogle(email: string, providerId: string): Promise<IUsuario> {
 
-        return await prisma.$transaction(async (tx) => {
+        return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             
             const usuario = await tx.usuarios.update({
                 where: {email},
