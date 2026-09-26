@@ -36,7 +36,7 @@ model usuarios_auth_providers {
 }
 
 model proyectos {
-  id                 String               @id @default(uuid())  @db.Uuid
+  id                 String               @id @default(uuid()) @db.Uuid
   creado_por         String               @db.Uuid
   titulo             String               @db.VarChar(255)
   curso_asignatura   String?              @db.VarChar(100)
@@ -62,12 +62,12 @@ model usuarios_proyectos {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model tasks {
-  id                                      String    @id  @default(uuid()) @db.Uuid
+  id                                      String    @id @default(uuid()) @db.Uuid
   id_proyecto                             String    @db.Uuid
   id_responsable                          String    @db.Uuid
   creado_por                              String    @db.Uuid
   titulo                                  String    @db.VarChar(255)
-  estado                                  String    @db.VarChar(11)
+  estado                                  ESTADO
   descripcion                             String    @db.VarChar
   motivo_rechazo                          String?   @db.VarChar(255)
   created_at                              DateTime  @default(now()) @db.Timestamp(6)
@@ -80,4 +80,11 @@ model tasks {
 enum ROL {
   TEAM_LEADER
   MEMBER
+}
+
+enum ESTADO {
+  EN_PROGRESO
+  EN_REVISION
+  COMPLETADO
+  RECHAZADO
 }
