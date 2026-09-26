@@ -8,3 +8,10 @@ export interface IUsuariosProyectos {
     created_at: Date
     updated_at: Date
 }
+
+export interface IUsuariosProyectosCrearDTO {
+    id_usuario: string
+    id_proyecto: string
+    rol: ROL
+}
+
