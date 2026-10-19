@@ -1,0 +1,34 @@
+<div class="field">
+  <label [for]="forLabel()">{{ label() }}</label>
+
+  <div class="control">
+    <input
+      [type]="inputType()"
+      [formControl]="control()"
+      [placeholder]="placeholder()"
+      [attr.aria-invalid]="showError()"
+      [attr.aria-describedby]="showError() ? '-error' : null"
+      [attr.aria-label]="hide() ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+    />
+
+    @if (isPassword()) {
+      <button
+        type="button"
+        class="reveal"
+        (click)="toggleHide()"
+        [attr.aria-pressed]="!hide()"
+      >
+        @if (hide()) {
+          <i class="fa-solid fa-eye" aria-hidden="true"></i>
+        } @else {
+          <i class="fa-solid fa-eye-slash" aria-hidden="true"></i>
+        }
+      </button>
+    }
+  </div>
+
+  @if (showError()) {
+    <p class="error">{{ errorMessage() }}</p>
+  }
+
+</div>

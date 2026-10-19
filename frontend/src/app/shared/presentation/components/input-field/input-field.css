@@ -1,0 +1,90 @@
+:host {
+  display: block;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.control {
+  position: relative;
+}
+
+input {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: var(--field);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 13px 16px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+input::placeholder {
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+input[aria-invalid='true'] {
+  border-color: var(--err);
+}
+
+
+.control:has(.reveal) input {
+  padding-right: 52px;
+}
+
+.reveal {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  font-size: 1rem;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+
+.reveal:hover {
+  color: var(--accent);
+  background: var(--layer1);
+}
+
+.reveal:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.error {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--err);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  input,
+  .reveal {
+    transition: none;
+  }
+}
