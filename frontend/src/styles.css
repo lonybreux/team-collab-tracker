@@ -1,16 +1,50 @@
 :root {
-  --color-primary: #4A6B5D;
-  --color-secondary: #C88A75;
-  --color-accent: #D9A752;
-  --color-bg: #F8F6F0;
-  --color-surface: #FFFFFF;
-  --color-text-main: #2C3531;
-  --color-text-muted: #6E7773;
-  --color-border: #E2DDD5;
+  /* Fondos */
+  --ground: #eef2ed;   /* fondo general */
+  --field: #dce6df;    /* inputs, pestañas, planos sutiles */
+  --surface: #f9fbf8;  /* tarjetas */
+
+  /* Capas decorativas */
+  --layer1: #cfdcd3;
+  --layer2: #bccfc4;
+
+  /* Panel izquierdo */
+  --side: #c3d4c9;     /* fondo del panel */
+  --side1: #d2e0d8;    /* plano más claro */
+  --side2: #afc5b8;    /* plano más oscuro */
+
+  /* Texto */
+  --ink: #1e2b28;      /* texto principal */
+  --muted: #51625d;    /* texto secundario */
+
+  /* Acciones y estados */
+  --accent: #2f5f57;      /* botón principal, enlaces */
+  --accent-ink: #f4f8f5;  /* texto sobre el acento */
+  --done: #6e9b8b;        /* puntos de la lista */
+  --err: #8c3b3b;        /* errores */
+
+  /* Tipografía */
+  --font: 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 body {
   height: 100%;
   margin: 0;
   padding: 0;
+  font: 400 1rem/1.55 var(--font);
 }

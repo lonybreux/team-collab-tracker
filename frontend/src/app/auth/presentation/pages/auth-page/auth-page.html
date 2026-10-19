@@ -1,0 +1,165 @@
+<div class="page">
+  <section class="side" aria-label="Presentación">
+
+    <div class="brand rise">Team Collab Tracker</div>
+
+    <div>
+      <h1 class="rise">Trabajar en equipo, con calma.</h1>
+      <p class="lead rise">
+        Ve quién hace qué y para cuándo en tus trabajos grupales, sin ruido ni urgencias de última hora.
+      </p>
+    </div>
+
+    <div class="sample rise" aria-label="Ejemplo de proyecto">
+      <h3>Ensayo de historia</h3>
+      <p class="meta">Pensado para trabajar con calma y orden</p>
+      <ul>
+        <li>
+          <span class="dot on"></span>
+          Ideas y avances en un solo lugar
+        </li>
+        <li>
+          <span class="dot on"></span>
+          Acuerdos y fechas siempre a la vista
+        </li>
+        <li>
+          <span class="dot on"></span>
+          Conversaciones sin ruido
+        </li>
+      </ul>
+      <p class="foot">Todo tu equipo, en la misma página</p>
+      <div class="note">
+        <strong>Sin prisa</strong>
+        <br>
+        Cada cosa a su ritmo
+      </div>
+    </div>
+  </section>
+
+
+
+  <main class="main">
+
+    <div class="card">
+      <div class="tabs rise" role="tablist" aria-label="Modo de acceso">
+        <button type="button" role="tab"  [aria-selected]="mode() === 'login'" (click)="setMode('login')">
+          Iniciar sesión
+        </button>
+
+        <button type="button" role="tab"  [aria-selected]="mode() === 'register'" (click)="setMode('register')">
+          Crear cuenta
+        </button>
+      </div>
+
+      <h2>{{ copy[mode()].title }}</h2>
+      <p class="sub">{{ copy[mode()].subtitle }}</p>
+
+      <button type="button" class="google">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+          <path fill="#4285F4" d="M17.64 9.2045c0-.638-.0573-1.2518-.1636-1.8409H9v3.4814h4.8436c-.2086 1.125-.8427 2.0782-1.7959 2.7164v2.2581h2.9087c1.7018-1.5668 2.6836-3.874 2.6836-6.615z"/>
+          <path fill="#34A853" d="M9 18c2.43 0 4.4673-.806 5.9564-2.1805l-2.9087-2.2581c-.8059.54-1.8368.859-3.0477.859-2.344 0-4.3282-1.5831-5.036-3.7104H.9574v2.3318C2.4382 15.9832 5.4818 18 9 18z"/>
+          <path fill="#FBBC05" d="M3.964 10.71c-.18-.54-.2822-1.1168-.2822-1.71s.1023-1.17.2823-1.71V4.9582H.9573A8.9965 8.9965 0 0 0 0 9c0 1.4523.3477 2.8268.9573 4.0418L3.964 10.71z"/>
+          <path fill="#EA4335" d="M9 3.5795c1.3214 0 2.5077.4541 3.4405 1.346l2.5813-2.5814C13.4632.8918 11.426 0 9 0 5.4818 0 2.4382 2.0168.9573 4.9582L3.964 7.29C4.6718 5.1627 6.656 3.5795 9 3.5795z"/>
+        </svg>
+        {{ copy[mode()].google }}
+      </button>
+
+      <div class="or" aria-hidden="true">o con tu correo</div>
+
+      @if (mode() === "login") {
+        <form [formGroup]="loginForm" novalidate>
+          <app-input-field
+            [control]="loginForm.controls.email"
+            type="email"
+            forLabel="correo"
+            label="Correo"
+            placeholder="nombre@universidad.edu"
+          >
+
+          </app-input-field>
+
+          <app-input-field
+            [control]="loginForm.controls.password"
+            type="password"
+            forLabel="contrasena"
+            label="Contraseña"
+            placeholder="Mínimo 8 caracteres"
+          >
+          </app-input-field>
+
+          <div class="row">
+            <label class="check">
+              <input type="checkbox" formControlName="remember">
+              <span>Recordarme</span>
+            </label>
+            <a href="#">¿Olvidaste tu contraseña?</a>
+          </div>
+
+          <button type="submit" class="submit">Iniciar sesión</button>
+
+        </form>
+      } @else {
+        <form [formGroup]="registerForm" novalidate>
+          <app-input-field
+            [control]="registerForm.controls.nombre"
+            type="text"
+            forLabel="nombre"
+            label="Nombre completo"
+            placeholder="Tu nombre"
+          ></app-input-field>
+
+          <app-input-field
+            [control]="registerForm.controls.email"
+            type="email"
+            forLabel="email"
+            label="Correo"
+            placeholder="nombre@universidad.edu"
+          ></app-input-field>
+
+          <app-input-field
+            [control]="registerForm.controls.password"
+            type="password"
+            forLabel="contrasena"
+            label="Contraseña"
+            placeholder="Mínimo 8 caracteres"
+          ></app-input-field>
+
+          <app-input-field
+            [control]="registerForm.controls.password"
+            type="password"
+            forLabel="contrasena"
+            label="Contraseña"
+            placeholder="Mínimo 8 caracteres"
+          ></app-input-field>
+
+          <app-input-field
+            [control]="registerForm.controls.confirm"
+            type="password"
+            forLabel="confirm"
+            label="Confirma tu contraseña"
+            placeholder="Repite la contraseña"
+          ></app-input-field>
+
+          @if (registerForm.hasError('passwordMismatch') && registerForm.controls.confirm.touched) {
+            <p class="error">Las contraseñas no coinciden</p>
+          }
+
+          <label class="check">
+            <input type="checkbox" formControlName="terms">
+            <span>Acepto los <a href="#">términos de uso</a> y la política de privacidad.</span>
+          </label>
+
+          @if (registerForm.controls.terms.invalid && registerForm.controls.terms.touched) {
+            <p class="error">Acepta los términos para continuar</p>
+          }
+
+          <button type="submit" class="submit">Crear cuenta</button>
+        </form>
+      }
+
+
+    </div>
+
+
+  </main>
+</div>
