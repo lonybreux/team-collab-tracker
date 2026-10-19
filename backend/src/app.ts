@@ -21,9 +21,9 @@ app.use(cors(corsOptions))
 app.use(express.json())
 app.use(cookieParser())
 
-app.use('/api/auth', authRoutes)
+app.use('/api/v1/auth', authRoutes)
 
-app.get('/ping',(_req: Request, res: Response) => {
+app.get('/api/v1/ping',(_req: Request, res: Response) => {
     try {
         res.json({
             message: 'pong'
