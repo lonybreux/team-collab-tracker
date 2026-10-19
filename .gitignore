@@ -26,6 +26,7 @@ frontend/.c9/
 frontend/*.launch
 frontend/.settings/
 frontend/*.sublime-workspace
+.idea
 
 # Visual Studio Code
 frontend/.vscode/*
