@@ -1,4 +1,5 @@
 node_modules/
+frontend/src/environments/
 backend/dist/
 .env
 backend/src/generated/prisma/
