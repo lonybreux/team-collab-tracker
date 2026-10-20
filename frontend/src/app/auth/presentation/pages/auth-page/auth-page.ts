@@ -8,6 +8,7 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { environment } from '../../../../../environments/environment.development';
 
 type AuthMode = 'login' | 'register'
 
@@ -78,4 +79,10 @@ export class AuthPage {
   setMode(mode: AuthMode): void {
     this.mode.set(mode);
   }
+
+  loginWithGoogle(): void {
+    window.location.href = `${environment.API_BASE_URL}${environment.API_AUTH_GOOGLE_ENDPOINT_PATH}`
+  }
+
+
 }
