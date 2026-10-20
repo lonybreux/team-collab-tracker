@@ -13,6 +13,16 @@ export default class AuthService {
 
     constructor(private usuarioRepository: UsuarioRepository, private emailService: EmailService){}
 
+    public async obtenerUsuarioPorId(id: string): Promise<IUsuario> {
+        const usuario = await this.usuarioRepository.findById(id)
+
+        if(!usuario) {
+            throw new UserNotFoundError()
+        }
+
+        return usuario
+    }
+
     public async registrarUsuarioLocal(usuario: IUsuarioCrearDTO): Promise<IUsuario> {
 
         const usuarioExists = await this.usuarioRepository.findByEmailConAuthProviders(usuario.email)
