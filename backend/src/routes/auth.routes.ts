@@ -5,6 +5,7 @@ import AuthController from "../controllers/auth.controller.js";
 import AuthService from "../services/auth.service.js";
 import EmailService from "../services/email.service.js";
 import UsuarioRepository from "../repositories/usuario.repository.js";
+import { authMiddleware } from "../middlewares/auth.middleware.js";
 const router = Router()
 
 const usuarioRepository = new UsuarioRepository()
@@ -15,6 +16,7 @@ const authController = new AuthController(authService)
 router.post('/register', schemaValidation(registrarSchema), authController.register)
 router.post('/verificar-email', schemaValidation(verificarEmailSchema), authController.verificarEmail)
 router.post('/login',schemaValidation(loginSchema), authController.login)
+router.get('/me', authMiddleware ,authController.me)
 router.get('/google', authController.google)
 router.get('/google/callback', authController.googleCallback)
 

@@ -7,6 +7,7 @@ import { AppError } from "../errors/app.error.js";
 
 import { OAuth2Client, type GenerateAuthUrlOpts } from "google-auth-library";
 import crypto from 'node:crypto'
+import type { AuthenticatedRequest } from "../middlewares/auth.middleware.js";
 
 const client = new OAuth2Client(
     env.GOOGLE_CLIENT_ID,
@@ -35,7 +36,9 @@ export default class AuthController {
 
             res.status(201).json({
                 message: 'Usuario registrado correctamente',
-                body: usuarioResponse
+                body: {
+                    usuario: usuarioResponse
+                }
             })
             return
         } catch(error) {
@@ -72,7 +75,9 @@ export default class AuthController {
 
             res.json({
                 message: 'Usuario verificado con éxito',
-                body: usuarioResponse
+                body: {
+                    usuario: usuarioResponse
+                }
             })
             return
 
@@ -247,4 +252,43 @@ export default class AuthController {
         }
     }
 
+    public me = async (req: Request, res: Response): Promise<void> => {
+        try {
+
+            const usuarioId = (req as AuthenticatedRequest).usuarioId
+
+            const usuario = await this.authService.obtenerUsuarioPorId(usuarioId)
+
+            const usuarioResponse: IUsuarioResponseDTO = {
+                id: usuario.id,
+                nombre: usuario.nombre,
+                email: usuario.email,
+                foto_perfil: usuario.foto_perfil,
+                email_verificado: usuario.email_verificado
+            }
+            
+            res.json({
+                message: "Usuario autenticado",
+                body: {
+                    usuario: usuarioResponse
+                }
+            })
+            
+            return
+        } catch(error) {
+
+            if(error instanceof AppError) {
+                res.status(error.statusCode).json({
+                    message: error.message
+                })
+                return
+            }
+
+            res.status(500).json({
+                message: 'error interno del sistema. Vuelva a intentar más tarde.'
+            })
+            return
+
+        }
+    }
 }
