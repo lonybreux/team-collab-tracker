@@ -9,6 +9,14 @@ export interface IUsuariosProyectos {
     updated_at: Date
 }
 
+export interface IProyectoUsuarioResponseDTO {
+    id: string
+    titulo: string
+    cursoAsignatura: string
+    rol: string
+    nombreCreador: string
+}
+
 export interface IUsuariosProyectosCrearDTO {
     id_usuario: string
     id_proyecto: string

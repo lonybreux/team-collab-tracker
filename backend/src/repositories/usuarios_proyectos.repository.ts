@@ -14,7 +14,11 @@ export default class UsuariosProyectosRepository implements IRepository<IUsuario
         return await prisma.usuarios_proyectos.findMany({
             where:  {id_usuario: id},
             include: {
-                proyectos: true
+                proyectos: {
+                    include: {
+                        usuarios: true
+                    }
+                }
             }
         })
     }
