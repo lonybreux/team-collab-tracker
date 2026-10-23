@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser'
 
 import env from './config/env.js'
 import authRoutes from './routes/auth.routes.js'
+import proyectoRoutes from './routes/proyecto.routes.js'
 
 const corsOptions: CorsOptions = {
     origin: env.FRONTEND_URL,
@@ -22,6 +23,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use('/api/v1/auth', authRoutes)
+app.use('/api/v1/proyectos', proyectoRoutes)
 
 app.get('/api/v1/ping',(_req: Request, res: Response) => {
     try {
