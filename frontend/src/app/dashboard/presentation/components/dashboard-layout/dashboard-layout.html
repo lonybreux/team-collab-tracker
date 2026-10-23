@@ -1,1 +1,60 @@
-<p>dashboard-layout works!</p>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="m11 17-5-5 5-5M18 17l-5-5 5-5"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3M16 8l4 4-4 4M20 12H9"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16 9.5"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+  <symbol id="i-mark" viewBox="0 0 34 34"><rect x="2" y="9" width="22" height="22" rx="7" fill="var(--side2)"/><rect x="10" y="2" width="22" height="22" rx="7" fill="var(--accent)"/></symbol>
+</svg>
+
+<div class="dashboard" id="dashboard">
+  <aside class="side" id="side" aria-label="Navegación principal">
+    <div class="brandrow">
+      <svg class="mark">
+        <use href="#i-mark"></use>
+      </svg>
+      <span class="bname">Team Collab Tracker</span>
+      <button class="iconbtn collapse" id="collapse" type="button" aria-label="Contraer barra lateral" aria-expanded="true">
+        <svg class="ic">
+          <use href="#i-left"></use>
+        </svg>
+      </button>
+    </div>
+
+    <nav>
+      @for (option of options(); track option.label) {
+        <a class="nav" [id]="'n-' + option.label" [href]="option.to">
+          <svg class="ic">
+            <use [attr.href]="option.icon"></use>
+          </svg>
+          <span class="label">{{ option.label }}</span>
+        </a>
+      }
+    </nav>
+
+    <div class="aside-footer">
+      <div class="me">
+        <span class="av">V</span>
+        <span class="who">
+          <strong>Valeria Núñez</strong>
+          <small>Estudiante</small>
+        </span>
+      </div>
+    </div>
+    <button class="logout" type="button" title="Cerrar sesión">
+      <svg class="ic">
+        <use href="#i-out"></use>
+      </svg>
+      <span class="label">Cerrar sesión</span>
+    </button>
+
+  </aside>
+</div>
+
+

@@ -1,0 +1,182 @@
+button ,input, select, textarea{
+  font: inherit;
+  color: inherit;
+}
+
+.ic {
+  width:20px;
+  height:20px;
+  flex:none;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 276px 1fr;
+  min-height: 100vh;
+  transition: grid-template-columns .3s ease;
+}
+
+.side {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--side);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.dashboard[data-collapsed]{
+  grid-template-columns:92px 1fr
+}
+
+.side::before,.side::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  border-radius:40px
+}
+
+.side::before{
+  width:120%;
+  height:34%;
+  right:-50%;
+  top:-8%;
+  background:var(--side1);
+  transform:rotate(-16deg)
+}
+
+.side::after{
+  width:130%;
+  height:38%;
+  left:-40%;
+  bottom:-14%;
+  background:var(--side2);
+  transform:rotate(10deg)
+}
+
+.brandrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 6px;
+}
+
+.mark {
+  width: 34px;
+  height: 34px;
+  flex: none;
+}
+
+.bname {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  flex: 1;
+}
+
+.iconbtn {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background .2s;
+}
+.iconbtn:hover {
+  background: var(--side1);
+}
+
+.collapse .ic {
+  transition: transform .3s;
+}
+
+.dashboard[data-collapsed] .collapse .ic {
+  transform: rotate(180deg);
+}
+
+nav {
+  display: grid;
+  gap: 6px;
+}
+
+.nav, .logout {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 14px;
+  background: none;
+  text-decoration: none;
+  color: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background .2s;
+}
+
+.nav:hover, .logout:hover {
+  background: var(--side1);
+}
+
+.nav[aria-current="page"] {
+  background: var(--surface);
+  font-weight: 600;
+}
+
+.aside-footer {
+  margin-top: auto; display: grid; gap: 6px;
+}
+
+.aside-footer {
+  margin-top: auto;
+  display: grid;
+  gap: 6px;
+}
+
+.me {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--side1);
+  border-radius: 16px;
+}
+
+.av {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: .9rem;
+}
+
+.me small {
+  display: block;
+  font-size: .9rem;
+  opacity: .8;
+  line-height: 1.2;
+}
+
+.dashboard[data-collapsed] :is(.bname,.label,.mark,.me .who){display:none}
+.dashboard[data-collapsed] :is(.brandrow,.me){justify-content:center}
+.dashboard[data-collapsed] :is(.nav,.logout){justify-content:center;padding:12px}
+.dashboard[data-collapsed] .me{padding:10px 0;background:none}

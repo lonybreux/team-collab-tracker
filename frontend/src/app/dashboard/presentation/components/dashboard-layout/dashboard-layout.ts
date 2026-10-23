@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
 
 @Component({
   imports: [],
@@ -6,4 +6,10 @@ import { Component } from '@angular/core';
   styleUrl: './dashboard-layout.css',
   templateUrl: './dashboard-layout.html',
 })
-export class DashboardLayout {}
+export class DashboardLayout {
+
+  options = computed(() => [
+    {label: 'Proyectos', to:'/proyectos', icon: '#i-folder'},
+    {label: 'Tareas', to: '/tareas', icon: '#i-check'}
+  ])
+}
