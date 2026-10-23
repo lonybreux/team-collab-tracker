@@ -10,9 +10,12 @@ export default class UsuariosProyectosRepository implements IRepository<IUsuario
         })
     }
 
-    public async findByIdUsuario(id: string): Promise<IUsuariosProyectos[] | null> {
+    public async findByIdUsuario(id: string): Promise<any[]> {
         return await prisma.usuarios_proyectos.findMany({
-            where:  {id_usuario: id}
+            where:  {id_usuario: id},
+            include: {
+                proyectos: true
+            }
         })
     }
 
