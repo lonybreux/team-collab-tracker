@@ -180,7 +180,7 @@ export default class AuthController {
             res.redirect(url)
         } catch(error) {
             res.status(500).json({
-                message: error instanceof Error ? error.message : 'error interno del sistema. Vuelva a intentar más tarde.'
+                message:'error interno del sistema. Vuelva a intentar más tarde.'
             })
             return
         }
@@ -246,7 +246,7 @@ export default class AuthController {
             res.redirect(`${env.FRONTEND_URL}/dashboard`)
         } catch(error) {
             res.status(500).json({
-                message: error instanceof Error ? error.message : 'error interno del sistema. Vuelva a intentar más tarde.'
+                message: 'error interno del sistema. Vuelva a intentar más tarde.'
             })
             return
         }
