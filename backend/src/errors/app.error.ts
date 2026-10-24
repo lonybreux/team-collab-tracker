@@ -44,3 +44,15 @@ export class InvalidAuthMethodError extends AppError {
         super(message, 400)
     }
 }
+
+export class ProjectDoesntExistError extends AppError {
+    constructor(message: string = 'El proyecto no existe o no pertenece a el') {
+        super(message, 404)
+    }
+}
+
+export class UnauthorizedMemberActionError extends AppError {
+    constructor(message: string = 'Sin permisos de team leader para realizar esta accion') {
+        super(message, 403)
+    }
+}

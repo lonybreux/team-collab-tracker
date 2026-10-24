@@ -1,3 +1,4 @@
+import { ProjectDoesntExistError, UnauthorizedMemberActionError } from "../errors/app.error.js";
 import type { IProyecto, IProyectoCrearDTO } from "../models/proyecto.model.js";
 import type { IProyectoUsuarioResponseDTO } from "../models/usuarios_proyectos.model.js";
 import type ProyectoRepository from "../repositories/proyecto.repository.js";
@@ -35,7 +36,21 @@ export default class ProyectoService {
         return await this.proyectoRepository.createProyecto(entity,idCreador)
     }
 
-    public async eliminarProyecto(id: string): Promise<void> {
-        return await this.proyectoRepository.delete(id)
+    public async eliminarProyecto(idUsuario: string, idProyecto: string): Promise<void> {
+        
+        const usuarioProyecto = await this.usuariosProyectosRepository.findByIdUsuarioAndIdProyecto(idUsuario, idProyecto)
+
+        if(usuarioProyecto === null) {
+            throw new ProjectDoesntExistError()
+        }
+
+        if(usuarioProyecto.rol !== 'TEAM_LEADER') {
+            throw new UnauthorizedMemberActionError()
+        }
+
+
+        await this.proyectoRepository.delete(idProyecto)
+        return
+
     }
 }
