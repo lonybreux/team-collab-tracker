@@ -29,6 +29,16 @@ export default class UsuariosProyectosRepository implements IRepository<IUsuario
         })
     }
 
+    public async findByIdUsuarioAndIdProyecto(idUsuario: string, idProyecto: string): Promise<IUsuariosProyectos | null> {
+
+        return await prisma.usuarios_proyectos.findFirst({
+            where: {
+                id_usuario: idUsuario,
+                id_proyecto: idProyecto
+            }
+        })
+    }
+
     public async createUsuarioProyecto(entity: IUsuariosProyectosCrearDTO): Promise<IUsuariosProyectos> {
         return await prisma.usuarios_proyectos.create({
             data: {
