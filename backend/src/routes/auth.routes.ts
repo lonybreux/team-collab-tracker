@@ -13,6 +13,7 @@ const emailService = new EmailService()
 const authService = new AuthService(usuarioRepository, emailService)
 const authController = new AuthController(authService)
 
+router.post('/logout', authController.logout)
 router.post('/register', schemaValidation(registrarSchema), authController.register)
 router.post('/verificar-email', schemaValidation(verificarEmailSchema), authController.verificarEmail)
 router.post('/login',schemaValidation(loginSchema), authController.login)
