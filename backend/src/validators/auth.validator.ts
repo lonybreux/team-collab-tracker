@@ -16,3 +16,7 @@ export const loginSchema = z.object({
     email: z.email('Formato de email inválido'),
     contrasena: z.string().min(1, 'La contraseña es requerida')
 })
+
+export const proyectoIdParamsSchema = z.object({
+    id: z.uuid('Formato de id invalido')
+})
