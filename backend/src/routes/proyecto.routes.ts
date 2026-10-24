@@ -14,5 +14,6 @@ const proyectoService = new ProyectoService(proyectoRepository, usuariosProyecto
 const proyectoController = new ProyectoController(proyectoService)
 
 router.get('/', authMiddleware, proyectoController.getProyectos)
+router.post('/', authMiddleware, proyectoController.createProyecto)
 
 export default router
