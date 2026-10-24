@@ -20,9 +20,9 @@ export default class ProyectoService {
         return relaciones.map(relacion => ({
             id: relacion.proyectos.id,
             titulo: relacion.proyectos.id,
-            cursoAsignatura: relacion.proyectos.curso_asignatura,
+            curso_asignatura: relacion.proyectos.curso_asignatura,
             rol: relacion.rol,
-            nombreCreador: relacion.proyectos.usuarios.nombre
+            nombre_creador: relacion.proyectos.usuarios.nombre
         }))
     }
 

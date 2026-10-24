@@ -12,9 +12,9 @@ export interface IUsuariosProyectos {
 export interface IProyectoUsuarioResponseDTO {
     id: string
     titulo: string
-    cursoAsignatura: string
+    curso_asignatura: string
     rol: string
-    nombreCreador: string
+    nombre_creador: string
 }
 
 export interface IUsuariosProyectosCrearDTO {
