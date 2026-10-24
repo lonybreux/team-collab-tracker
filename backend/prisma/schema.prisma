@@ -16,7 +16,8 @@ model usuarios {
   token_verificacion_expires_at        DateTime?                 @db.Timestamp(6)
   foto_perfil                          String?                   @db.VarChar
   created_at                           DateTime                  @default(now()) @db.Timestamp(6)
-  updated_at                           DateTime                  @default(now()) @db.Timestamp(6)
+  updated_at                           DateTime                  @updatedAt @db.Timestamp(6)
+  invitaciones_proyectos               invitaciones_proyectos[]
   proyectos                            proyectos[]
   tasks_tasks_creado_porTousuarios     tasks[]                   @relation("tasks_creado_porTousuarios")
   tasks_tasks_id_responsableTousuarios tasks[]                   @relation("tasks_id_responsableTousuarios")
@@ -31,20 +32,21 @@ model usuarios_auth_providers {
   provider_id     String?  @db.VarChar
   contrasena_hash String?  @db.VarChar
   created_at      DateTime @default(now()) @db.Timestamp(6)
-  updated_at      DateTime @default(now()) @db.Timestamp(6)
+  updated_at      DateTime @updatedAt @db.Timestamp(6)
   usuarios        usuarios @relation(fields: [id_usuario], references: [id], onDelete: Cascade)
 }
 
 model proyectos {
-  id                 String               @id @default(uuid()) @db.Uuid
-  creado_por         String               @db.Uuid
-  titulo             String               @db.VarChar(255)
-  curso_asignatura   String?              @db.VarChar(100)
-  created_at         DateTime             @default(now()) @db.Timestamp(6)
-  updated_at         DateTime             @default(now()) @db.Timestamp(6)
-  usuarios           usuarios             @relation(fields: [creado_por], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_proyectos_usuarios")
-  tasks              tasks[]
-  usuarios_proyectos usuarios_proyectos[]
+  id                     String                   @id @default(uuid()) @db.Uuid
+  creado_por             String                   @db.Uuid
+  titulo                 String                   @db.VarChar(255)
+  curso_asignatura       String?                  @db.VarChar(100)
+  created_at             DateTime                 @default(now()) @db.Timestamp(6)
+  updated_at             DateTime                 @updatedAt @db.Timestamp(6)
+  invitaciones_proyectos invitaciones_proyectos[]
+  usuarios               usuarios                 @relation(fields: [creado_por], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_proyectos_usuarios")
+  tasks                  tasks[]
+  usuarios_proyectos     usuarios_proyectos[]
 }
 
 model usuarios_proyectos {
@@ -53,7 +55,7 @@ model usuarios_proyectos {
   id_proyecto String    @db.Uuid
   rol         ROL
   created_at  DateTime  @default(now()) @db.Timestamp(6)
-  updated_at  DateTime  @default(now()) @db.Timestamp(6)
+  updated_at  DateTime  @updatedAt @db.Timestamp(6)
   proyectos   proyectos @relation(fields: [id_proyecto], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_usuarios_proyectos_proyectos")
   usuarios    usuarios  @relation(fields: [id_usuario], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_usuarios_proyectos_usuarios")
 
@@ -71,10 +73,25 @@ model tasks {
   descripcion                             String    @db.VarChar
   motivo_rechazo                          String?   @db.VarChar(255)
   created_at                              DateTime  @default(now()) @db.Timestamp(6)
-  updated_at                              DateTime  @default(now()) @db.Timestamp(6)
+  updated_at                              DateTime  @updatedAt @db.Timestamp(6)
   usuarios_tasks_creado_porTousuarios     usuarios  @relation("tasks_creado_porTousuarios", fields: [creado_por], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tasks_creado_por")
   proyectos                               proyectos @relation(fields: [id_proyecto], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tasks_proyectos")
   usuarios_tasks_id_responsableTousuarios usuarios  @relation("tasks_id_responsableTousuarios", fields: [id_responsable], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tasks_responsable")
+}
+
+model invitaciones_proyectos {
+  id                          String    @id @default(uuid()) @db.Uuid
+  id_proyecto                 String    @db.Uuid
+  email                       String    @db.VarChar(255)
+  id_invitado_por             String    @db.Uuid
+  rol                         ROL       @default(MEMBER)
+  aceptada                    Boolean   @default(false)
+  token_aceptacion            String    @db.VarChar(6)
+  token_aceptacion_expires_at DateTime  @db.Timestamp(6)
+  created_at                  DateTime  @default(now()) @db.Timestamp(6)
+  updated_at                  DateTime  @updatedAt @db.Timestamp(6)
+  proyectos                   proyectos @relation(fields: [id_proyecto], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_invitaciones_proyectos_proyectos")
+  usuarios                    usuarios  @relation(fields: [id_invitado_por], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_invitaciones_proyectos_usuarios")
 }
 
 enum ROL {
