@@ -13,9 +13,18 @@ export interface IInvitacionesProyectos {
     updated_at: Date
 }
 
-export interface IInvitacionProyectosRequestDto {
+export interface IInvitacionesProyectosRequestDto {
     id_proyecto: string
     email: string
     rol: string
+}
+
+export interface IInvitacionesProyectosCreateDTO {
+    id_proyecto: string
+    email: string
+    id_invitado_por: string
+    rol: ROL
+    token_aceptacion: string
+    token_aceptacion_expires_at: Date
 }
 
