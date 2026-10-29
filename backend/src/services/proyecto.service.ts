@@ -1,6 +1,6 @@
 import { ProjectDoesntExistError, UnauthorizedMemberActionError } from "../errors/app.error.js";
-import type { IProyecto, IProyectoCrearDTO } from "../models/proyecto.model.js";
-import type { IProyectoUsuarioResponseDTO } from "../models/usuarios_proyectos.model.js";
+import type { IProyecto, IProyectoCreateDTO } from "../models/proyecto.model.js";
+import type { IUsuariosProyectos } from "../models/usuarios_proyectos.model.js";
 import type ProyectoRepository from "../repositories/proyecto.repository.js";
 import type UsuariosProyectosRepository from "../repositories/usuarios_proyectos.repository.js";
 
@@ -13,27 +13,18 @@ export default class ProyectoService {
         return await this.proyectoRepository.findById(id)
     }
 
-    public async obtenerProyectosPorIdUsuario(id: string): Promise<IProyectoUsuarioResponseDTO[]> {
+    public async obtenerProyectosPorIdUsuario(id: string): Promise<IUsuariosProyectos[]> {
 
-        const relaciones = await this.usuariosProyectosRepository.findByIdUsuario(id)
+        return await this.usuariosProyectosRepository.findByIdUsuario(id)
 
-        return relaciones.map(relacion => ({
-            id: relacion.proyectos.id,
-            titulo: relacion.proyectos.id,
-            curso_asignatura: relacion.proyectos.curso_asignatura,
-            rol: relacion.rol,
-            nombre_creador: relacion.proyectos.usuarios.nombre
-        }))
     }
 
     public async obtenerPorIdCreador(id: string): Promise<IProyecto[] | null> {
         return await this.proyectoRepository.findByCreadorId(id)
     }
 
-    
-
-    public async crearProyecto(entity: IProyectoCrearDTO, idCreador: string): Promise<IProyecto | null> {
-        return await this.proyectoRepository.createProyecto(entity,idCreador)
+    public async crearProyecto(entity: IProyectoCreateDTO): Promise<IProyecto | null> {
+        return await this.proyectoRepository.create(entity)
     }
 
     public async eliminarProyecto(idUsuario: string, idProyecto: string): Promise<void> {
