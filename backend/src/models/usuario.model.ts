@@ -39,6 +39,7 @@ export interface IUsuarioCreateGoogleDTO {
     nombre: string
     email: string
     foto_perfil: string | null
+    provider_id: string
 }
 
 export interface IUsuarioRequestDTO {

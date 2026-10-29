@@ -61,7 +61,7 @@ export default class UsuarioRepository {
 
     }
 
-    public async createUsuarioGoogle(entity: IUsuarioCreateGoogleDTO, provider_id: string): Promise<IUsuario> {
+    public async createUsuarioGoogle(entity: IUsuarioCreateGoogleDTO): Promise<IUsuario> {
 
         return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const usuario = await tx.usuarios.create({
@@ -77,7 +77,7 @@ export default class UsuarioRepository {
                 data: {
                     id_usuario: usuario.id,
                     provider: 'GOOGLE',
-                    provider_id: provider_id
+                    provider_id: entity.provider_id
                 }
             })
 
