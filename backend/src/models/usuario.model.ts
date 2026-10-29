@@ -26,7 +26,22 @@ export interface IUsuarioConAuthProviders extends IUsuario {
     usuarios_auth_providers: IUsuariosAuthProvider[]
 }
 
-export interface IUsuarioCrearDTO {
+export interface IUsuarioCreateLocalDTO {
+    nombre: string
+    email: string
+    contrasena_hash: string
+    token_verificacion: string
+    token_verificacion_expires_at: Date
+    foto_perfil: string | null
+}
+
+export interface IUsuarioCreateGoogleDTO {
+    nombre: string
+    email: string
+    foto_perfil: string | null
+}
+
+export interface IUsuarioRequestDTO {
     nombre: string
     email: string
     contrasena: string

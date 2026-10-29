@@ -1,40 +1,38 @@
-import type IRepository from "./repository.interface.js";
 import { Prisma } from "@prisma/client/extension";
 import prisma from "../config/db.js";
-import type { IUsuario, IUsuarioCrearDTO, IUsuarioConAuthProviders } from "../models/usuario.model.js";
+import type { IUsuario, IUsuarioConAuthProviders, IUsuarioCreateLocalDTO, IUsuarioCreateGoogleDTO } from "../models/usuario.model.js";
 
 
-export default class UsuarioRepository implements IRepository<IUsuario> {
-
-    public async findById(id: string): Promise<IUsuario | null> {
-        return await prisma.usuarios.findUnique({
+export default class UsuarioRepository {
+    
+    public findById(id: string): Promise<IUsuario | null> {
+        return prisma.usuarios.findUnique({
             where: {id}
         })
     }
 
-    public async findByEmail(email: string): Promise<IUsuario | null> {
-        return await prisma.usuarios.findUnique({
+    public findByEmail(email: string): Promise<IUsuario | null> {
+        return prisma.usuarios.findUnique({
             where: {email}
         })
     }
 
-    public async findByEmailConAuthProviders(email: string): Promise<IUsuarioConAuthProviders | null> {
-        return await prisma.usuarios.findUnique({
+    public findByEmailConAuthProviders(email: string): Promise<IUsuarioConAuthProviders | null> {
+        return prisma.usuarios.findUnique({
             where: {email},
             include: {usuarios_auth_providers: true}
         })
     }
 
-    public async createUsuarioLocal(entity: Omit<IUsuarioCrearDTO, 'contrasena'> & 
-        {contrasenaHash: string, tokenVerificacion: string, tokenVerificacionExpiresAt: Date}): Promise<IUsuario> {
+    public async createUsuarioLocal(entity: IUsuarioCreateLocalDTO): Promise<IUsuario> {
 
         return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const usuario = await tx.usuarios.create({
                 data: {
                     nombre: entity.nombre,
                     email: entity.email,
-                    token_verificacion: entity.tokenVerificacion,
-                    token_verificacion_expires_at: entity.tokenVerificacionExpiresAt,
+                    token_verificacion: entity.token_verificacion,
+                    token_verificacion_expires_at: entity.token_verificacion_expires_at,
                     foto_perfil: entity.foto_perfil    
                 }
             })
@@ -43,7 +41,7 @@ export default class UsuarioRepository implements IRepository<IUsuario> {
                 data: {
                     id_usuario: usuario.id,
                     provider: 'LOCAL',
-                    contrasena_hash: entity.contrasenaHash
+                    contrasena_hash: entity.contrasena_hash
                 }
             })
 
@@ -53,7 +51,6 @@ export default class UsuarioRepository implements IRepository<IUsuario> {
 
     public async createAuthProviderLocal(idUsuario: string, contrasenaHash: string): Promise<void> {
 
-    
         await prisma.usuarios_auth_providers.create({
             data: {
                 id_usuario: idUsuario,
@@ -62,10 +59,9 @@ export default class UsuarioRepository implements IRepository<IUsuario> {
             }
         })
 
-        return
     }
 
-    public async createUsuarioGoogle(entity: Omit<IUsuarioCrearDTO, 'contrasena'> & {providerId: string}): Promise<IUsuario> {
+    public async createUsuarioGoogle(entity: IUsuarioCreateGoogleDTO, provider_id: string): Promise<IUsuario> {
 
         return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const usuario = await tx.usuarios.create({
@@ -81,7 +77,7 @@ export default class UsuarioRepository implements IRepository<IUsuario> {
                 data: {
                     id_usuario: usuario.id,
                     provider: 'GOOGLE',
-                    provider_id: entity.providerId
+                    provider_id: provider_id
                 }
             })
 
@@ -131,7 +127,6 @@ export default class UsuarioRepository implements IRepository<IUsuario> {
         await prisma.usuarios.delete({
             where: {id}
         })
-        return
     }
 
 }
