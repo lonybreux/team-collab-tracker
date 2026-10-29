@@ -34,7 +34,6 @@ export default class InvitacionesProyectosRepository implements IRepository<IInv
                 id
             }
         })
-        return
     }
     
     

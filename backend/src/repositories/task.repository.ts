@@ -5,31 +5,31 @@ import type IRepository from "./repository.interface.js";
 export default class TaskRepository implements IRepository<ITask, ITaskCreateDTO> {
     
 
-    public async findById(id: string): Promise<ITask | null> {
+    public findById(id: string): Promise<ITask | null> {
         return prisma.tasks.findUnique({
             where: { id }
         })
     }
 
-    public async findByIdProyecto(id: string): Promise<ITask[] | null> {
+    public findByIdProyecto(id: string): Promise<ITask[] | null> {
         return prisma.tasks.findMany({
             where: {id_proyecto: id}
         })
     }
 
-    public async findByIdResponsable(id: string): Promise<ITask[] | null> {
+    public findByIdResponsable(id: string): Promise<ITask[] | null> {
         return prisma.tasks.findMany({
             where: {id_responsable: id}
         })
     }
 
-    public async findByIdCreadoPor(id: string): Promise<ITask[] | null> {
+    public findByIdCreadoPor(id: string): Promise<ITask[] | null> {
         return prisma.tasks.findMany({
             where: { creado_por: id}
         })
     }
 
-    public async create(entity: ITaskCreateDTO): Promise<ITask> {
+    public create(entity: ITaskCreateDTO): Promise<ITask> {
         return prisma.tasks.create({
             data: {
                 id_proyecto: entity.id_proyecto,
@@ -43,7 +43,7 @@ export default class TaskRepository implements IRepository<ITask, ITaskCreateDTO
         })
     }
 
-    update(entity: ITask): Promise<ITask> {
+    public update(entity: ITask): Promise<ITask> {
         return prisma.tasks.update({
             where: {
                 id: entity.id
@@ -61,11 +61,9 @@ export default class TaskRepository implements IRepository<ITask, ITaskCreateDTO
     }
 
     public async delete(id: string): Promise<void> {
-        prisma.tasks.delete({
+        await prisma.tasks.delete({
             where: { id }
         })
-        return
-        
     }
 
 }

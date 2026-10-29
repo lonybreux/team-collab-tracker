@@ -125,7 +125,7 @@ export default class UsuarioRepository {
 
     public async delete(id: string): Promise<void> {
         await prisma.usuarios.delete({
-            where: {id}
+            where: { id }
         })
     }
 

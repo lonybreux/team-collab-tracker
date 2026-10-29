@@ -4,13 +4,13 @@ import type IRepository from "./repository.interface.js";
 
 export default class UsuariosProyectosRepository implements IRepository<IUsuariosProyectos, IUsuariosProyectosCreateDTO> {
     
-    public async findById(id: string): Promise<IUsuariosProyectos | null> {
+    public findById(id: string): Promise<IUsuariosProyectos | null> {
         return prisma.usuarios_proyectos.findUnique({
             where: { id }
         })
     }
 
-    public async findByIdUsuario(id: string): Promise<IUsuariosProyectos[]> {
+    public findByIdUsuario(id: string): Promise<IUsuariosProyectos[]> {
         return prisma.usuarios_proyectos.findMany({
             where: {
                 id_usuario: id
@@ -18,13 +18,13 @@ export default class UsuariosProyectosRepository implements IRepository<IUsuario
         })
     }
 
-    public async findByIdProyecto(id: string): Promise<IUsuariosProyectos[] | null> {
+    public findByIdProyecto(id: string): Promise<IUsuariosProyectos[] | null> {
         return prisma.usuarios_proyectos.findMany({
             where: {id_proyecto: id}
         })
     }
 
-    public async findByIdUsuarioAndIdProyecto(idUsuario: string, idProyecto: string): Promise<IUsuariosProyectos | null> {
+    public findByIdUsuarioAndIdProyecto(idUsuario: string, idProyecto: string): Promise<IUsuariosProyectos | null> {
 
         return prisma.usuarios_proyectos.findFirst({
             where: {
@@ -34,7 +34,7 @@ export default class UsuariosProyectosRepository implements IRepository<IUsuario
         })
     }
 
-    public async create(entity: IUsuariosProyectosCreateDTO): Promise<IUsuariosProyectos> {
+    public create(entity: IUsuariosProyectosCreateDTO): Promise<IUsuariosProyectos> {
         return prisma.usuarios_proyectos.create({
             data: {
                 id_usuario: entity.id_usuario,
@@ -44,7 +44,7 @@ export default class UsuariosProyectosRepository implements IRepository<IUsuario
         })
     }
 
-    public async update(entity: IUsuariosProyectos): Promise<IUsuariosProyectos> {
+    public update(entity: IUsuariosProyectos): Promise<IUsuariosProyectos> {
         return prisma.usuarios_proyectos.update({
             where: {
                 id: entity.id
@@ -62,7 +62,6 @@ export default class UsuariosProyectosRepository implements IRepository<IUsuario
         await prisma.usuarios_proyectos.delete({
             where: { id }
         })
-        return 
     }
     
 }

@@ -5,19 +5,19 @@ import type { Prisma } from "@prisma/client/extension";
 
 export default class ProyectoRepository implements IRepository<IProyecto, IProyectoCreateDTO> {
     
-    public async findById(id: string): Promise<IProyecto | null> {
+    public findById(id: string): Promise<IProyecto | null> {
         return prisma.proyectos.findUnique({
             where: {id}
         })
     }
 
-    public async findByCreadorId(id:string): Promise<IProyecto[] | null> {
+    public findByCreadorId(id:string): Promise<IProyecto[] | null> {
         return prisma.proyectos.findMany({
             where: {creado_por: id}
         })
     }
 
-    public async create(entity: IProyectoCreateDTO): Promise<IProyecto> {
+    public create(entity: IProyectoCreateDTO): Promise<IProyecto> {
         return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const proyecto = await tx.proyectos.create({
                 data: {
@@ -39,7 +39,7 @@ export default class ProyectoRepository implements IRepository<IProyecto, IProye
         })
     }
 
-    update(entity: IProyecto): Promise<IProyecto> {
+    public update(entity: IProyecto): Promise<IProyecto> {
         return prisma.proyectos.update({
             where: {
                 id: entity.id
@@ -54,10 +54,10 @@ export default class ProyectoRepository implements IRepository<IProyecto, IProye
 
 
     public async delete(id: string): Promise<void> {
-        prisma.proyectos.delete({
+        await prisma.proyectos.delete({
             where: {id}
         })
-        return
+        
     }
 
 }
