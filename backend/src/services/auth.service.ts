@@ -1,4 +1,4 @@
-import type { IUsuario, IUsuarioCrearDTO } from "../models/usuario.model.js";
+import type { IUsuario, IUsuarioCreateGoogleDTO, IUsuarioRequestDTO } from "../models/usuario.model.js";
 import { AccountNotVerifiedError, InvalidAuthMethodError, InvalidCredentialsError, InvalidVerificationTokenError, UserAlreadyExistsError, UserNotFoundError } from "../errors/app.error.js";
 import type UsuarioRepository from "../repositories/usuario.repository.js";
 import EmailService from "./email.service.js";
@@ -23,7 +23,7 @@ export default class AuthService {
         return usuario
     }
 
-    public async registrarUsuarioLocal(usuario: IUsuarioCrearDTO): Promise<IUsuario> {
+    public async registrarUsuarioLocal(usuario: IUsuarioRequestDTO): Promise<IUsuario> {
 
         const usuarioExists = await this.usuarioRepository.findByEmailConAuthProviders(usuario.email)
 
@@ -47,9 +47,9 @@ export default class AuthService {
         const usuarioCreated = await this.usuarioRepository.createUsuarioLocal({
             nombre: usuario.nombre,
             email: usuario.email,
-            contrasenaHash,
-            tokenVerificacion,
-            tokenVerificacionExpiresAt: expiresAt,
+            contrasena_hash: contrasenaHash,
+            token_verificacion: tokenVerificacion,
+            token_verificacion_expires_at: expiresAt,
             foto_perfil: usuario.foto_perfil
         })
 
@@ -88,28 +88,15 @@ export default class AuthService {
 
         if(!contrasenaValida) throw new InvalidCredentialsError()
 
-
-        const usuarioCleaned: IUsuario = {
-            id: usuarioExists.id,
-            nombre: usuarioExists.nombre,
-            email: usuarioExists.email,
-            email_verificado: usuarioExists.email_verificado,
-            token_verificacion: usuarioExists.token_verificacion,
-            token_verificacion_expires_at: usuarioExists.token_verificacion_expires_at,
-            foto_perfil: usuarioExists.foto_perfil,
-            created_at: usuarioExists.created_at,
-            updated_at: usuarioExists.updated_at
-        }
-
-        const token = jwt.sign({id: usuarioCleaned.id}, env.JWT_SECRET, {expiresIn: '8h'})
+        const token = jwt.sign({id: usuarioExists.id}, env.JWT_SECRET, {expiresIn: '8h'})
         
         return {
-            usuario: usuarioCleaned,
+            usuario: usuarioExists,
             token
         }
     }
 
-    public async accesoGoogle(usuario: IUsuarioCrearDTO, providerId: string): Promise<{usuario: IUsuario, token: string}> {
+    public async accesoGoogle(usuario: IUsuarioCreateGoogleDTO): Promise<{usuario: IUsuario, token: string}> {
 
         const usuarioExists = await this.usuarioRepository.findByEmailConAuthProviders(usuario.email)
         
@@ -120,25 +107,13 @@ export default class AuthService {
 
             if(authGoogle) {
 
-                const usuarioCleaned: IUsuario = {
-                    id: usuarioExists.id,
-                    nombre: usuarioExists.nombre,
-                    email: usuarioExists.email,
-                    email_verificado: usuarioExists.email_verificado,
-                    token_verificacion: usuarioExists.token_verificacion,
-                    token_verificacion_expires_at: usuarioExists.token_verificacion_expires_at,
-                    foto_perfil: usuarioExists.foto_perfil,
-                    created_at: usuarioExists.created_at,
-                    updated_at: usuarioExists.updated_at
-                }
-
                 return {
-                    usuario: usuarioCleaned,
+                    usuario: usuarioExists,
                     token
                 }
             } else {
 
-                const usuarioAuthGoogle = await this.usuarioRepository.createAuthProviderGoogle(usuarioExists.email, providerId)
+                const usuarioAuthGoogle = await this.usuarioRepository.createAuthProviderGoogle(usuarioExists.email, usuario.provider_id)
 
                 return {
                     usuario: usuarioAuthGoogle,
@@ -152,25 +127,14 @@ export default class AuthService {
             nombre: usuario.nombre,
             email: usuario.email,
             foto_perfil: usuario.foto_perfil,
-            providerId
+            provider_id: usuario.provider_id
         })
 
-        const usuarioCleaned: IUsuario = {
-            id: usuarioCreated.id,
-            nombre: usuarioCreated.nombre,
-            email: usuarioCreated.email,
-            email_verificado: usuarioCreated.email_verificado,
-            token_verificacion: usuarioCreated.token_verificacion,
-            token_verificacion_expires_at: usuarioCreated.token_verificacion_expires_at,
-            foto_perfil: usuarioCreated.foto_perfil,
-            created_at: usuarioCreated.created_at,
-            updated_at: usuarioCreated.updated_at
-        }
-
-        const token = jwt.sign({id: usuarioCleaned.id}, env.JWT_SECRET, {expiresIn: '7d'})
+        
+        const token = jwt.sign({id: usuarioCreated.id}, env.JWT_SECRET, {expiresIn: '7d'})
 
         return {
-            usuario: usuarioCleaned,
+            usuario: usuarioCreated,
             token
         }
 
