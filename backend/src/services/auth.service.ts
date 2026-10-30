@@ -8,7 +8,6 @@ import bcrypt from 'bcrypt'
 import crypto from 'node:crypto'
 import env from "../config/env.js";
 
-
 export default class AuthService {
 
     constructor(private usuarioRepository: UsuarioRepository, private emailService: EmailService){}
@@ -89,9 +88,21 @@ export default class AuthService {
         if(!contrasenaValida) throw new InvalidCredentialsError()
 
         const token = jwt.sign({id: usuarioExists.id}, env.JWT_SECRET, {expiresIn: '8h'})
-        
+
+        const usuario: IUsuario = {
+            id: usuarioExists.id,
+            nombre: usuarioExists.nombre,
+            email: usuarioExists.email,
+            email_verificado: usuarioExists.email_verificado,
+            token_verificacion: usuarioExists.token_verificacion,
+            token_verificacion_expires_at: usuarioExists.token_verificacion_expires_at,
+            foto_perfil: usuarioExists.foto_perfil,
+            created_at: usuarioExists.created_at,
+            updated_at: usuarioExists.updated_at
+        }
+
         return {
-            usuario: usuarioExists,
+            usuario,
             token
         }
     }
@@ -100,15 +111,26 @@ export default class AuthService {
 
         const usuarioExists = await this.usuarioRepository.findByEmailConAuthProviders(usuario.email)
         
-
         if(usuarioExists) {
             const authGoogle = usuarioExists.usuarios_auth_providers.find(p => p.provider === 'GOOGLE')
-            const token = jwt.sign({id: usuarioExists.id}, env.JWT_SECRET, {expiresIn: '7d'})
+            const token = jwt.sign({id: usuarioExists.id}, env.JWT_SECRET, {expiresIn: '8h'})
 
             if(authGoogle) {
 
+                const usuario: IUsuario = {
+                    id: usuarioExists.id,
+                    nombre: usuarioExists.nombre,
+                    email: usuarioExists.email,
+                    email_verificado: usuarioExists.email_verificado,
+                    token_verificacion: usuarioExists.token_verificacion,
+                    token_verificacion_expires_at: usuarioExists.token_verificacion_expires_at,
+                    foto_perfil: usuarioExists.foto_perfil,
+                    created_at: usuarioExists.created_at,
+                    updated_at: usuarioExists.updated_at
+                }
+
                 return {
-                    usuario: usuarioExists,
+                    usuario: usuario,
                     token
                 }
             } else {
@@ -131,7 +153,7 @@ export default class AuthService {
         })
 
         
-        const token = jwt.sign({id: usuarioCreated.id}, env.JWT_SECRET, {expiresIn: '7d'})
+        const token = jwt.sign({id: usuarioCreated.id}, env.JWT_SECRET, {expiresIn: '8h'})
 
         return {
             usuario: usuarioCreated,
