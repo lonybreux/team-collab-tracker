@@ -11,4 +11,8 @@ export default class ProyectoMapper {
             created_at: proyecto.created_at
         }
     }
+
+    public static toResponseArrayDTO(proyectos: IProyecto[]): IProyectoResponseDTO[] {
+        return proyectos.map(proyecto => this.toResponseDTO(proyecto))
+    }
 }
