@@ -1,7 +1,8 @@
 import type { Request, Response } from "express";
 import type ProyectoService from "../services/proyecto.service.js";
+import ProyectoMapper from "../mappers/proyecto.mapper.js";
 import type { AuthenticatedRequest } from "../middlewares/auth.middleware.js";
-import type { IProyectoCrearDTO } from "../models/proyecto.model.js";
+import type { IProyectoRequestDTO, IProyectoResponseDTO } from "../models/proyecto.model.js";
 import { AppError } from "../errors/app.error.js";
 
 export default class ProyectoController {
@@ -15,7 +16,9 @@ export default class ProyectoController {
 
             const proyectos = await this.proyectoService.obtenerProyectosPorIdUsuario(usuarioId)
 
-            res.status(200).json(proyectos)
+            const proyectosResponse: IProyectoResponseDTO[] = ProyectoMapper.toResponseArrayDTO(proyectos)
+
+            res.status(200).json(proyectosResponse)
             return
 
         } catch(error) {
@@ -31,14 +34,16 @@ export default class ProyectoController {
 
             const usuarioId = (req as AuthenticatedRequest).usuarioId
 
-            const proyecto: IProyectoCrearDTO = req.body
+            const proyecto: IProyectoRequestDTO = req.body
 
             const createdProyecto = await this.proyectoService.crearProyecto(proyecto, usuarioId)
+
+            const proyectoResponse: IProyectoResponseDTO = ProyectoMapper.toResponseDTO(createdProyecto)
 
             res.status(201).json({
                 message: "Proyecto creado correctamente",
                 body: {
-                    proyecto: createdProyecto
+                    proyecto: proyectoResponse
                 }
             })
             return

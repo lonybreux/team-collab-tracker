@@ -23,7 +23,7 @@ export default class ProyectoService {
         return await this.proyectoRepository.findByCreadorId(id)
     }
 
-    public async crearProyecto(proyecto: IProyectoRequestDTO, creadoPor: string): Promise<IProyecto | null> {
+    public async crearProyecto(proyecto: IProyectoRequestDTO, creadoPor: string): Promise<IProyecto> {
 
         const proyectoCreate: IProyectoCreateDTO = {
             creado_por: creadoPor,
