@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 
 import AuthService from "../services/auth.service.js";
+import UsuarioMapper from "../mappers/usuario.mapper.js";
 import type { IUsuario, IUsuarioCreateGoogleDTO, IUsuarioRequestDTO, IUsuarioResponseDTO } from "../models/usuario.model.js";
 import env from "../config/env.js";
 import { AppError } from "../errors/app.error.js";
@@ -26,13 +27,7 @@ export default class AuthController {
 
             const usuarioCreated: IUsuario = await this.authService.registrarUsuarioLocal(usuario)
 
-            const usuarioResponse: IUsuarioResponseDTO = {
-                id: usuarioCreated.id,
-                nombre: usuarioCreated.nombre,
-                email: usuarioCreated.email,
-                foto_perfil: usuarioCreated.foto_perfil,
-                email_verificado: usuarioCreated.email_verificado
-            }
+            const usuarioResponse: IUsuarioResponseDTO = UsuarioMapper.toResponseDTO(usuarioCreated)
 
             res.status(201).json({
                 message: 'Usuario registrado correctamente',
@@ -65,13 +60,7 @@ export default class AuthController {
 
             const usuarioVerified: IUsuario = await this.authService.verificarEmail(token_verificacion, email)
 
-            const usuarioResponse: IUsuarioResponseDTO = {
-                id: usuarioVerified.id,
-                nombre: usuarioVerified.nombre,
-                email: usuarioVerified.email,
-                foto_perfil: usuarioVerified.foto_perfil,
-                email_verificado: usuarioVerified.email_verificado
-            }
+            const usuarioResponse: IUsuarioResponseDTO = UsuarioMapper.toResponseDTO(usuarioVerified)
 
             res.json({
                 message: 'Usuario verificado con éxito',
@@ -104,13 +93,7 @@ export default class AuthController {
 
             const { usuario, token } = await this.authService.loginUsuarioLocal(email, contrasena)
 
-            const usuarioResponse: IUsuarioResponseDTO = {
-                id: usuario.id,
-                nombre: usuario.nombre,
-                email: usuario.email,
-                foto_perfil: usuario.foto_perfil,
-                email_verificado: usuario.email_verificado
-            }
+            const usuarioResponse: IUsuarioResponseDTO = UsuarioMapper.toResponseDTO(usuario)
 
             res.cookie('session', token, {
                 httpOnly: true,
@@ -259,13 +242,7 @@ export default class AuthController {
 
             const usuario = await this.authService.obtenerUsuarioPorId(usuarioId)
 
-            const usuarioResponse: IUsuarioResponseDTO = {
-                id: usuario.id,
-                nombre: usuario.nombre,
-                email: usuario.email,
-                foto_perfil: usuario.foto_perfil,
-                email_verificado: usuario.email_verificado
-            }
+            const usuarioResponse: IUsuarioResponseDTO = UsuarioMapper.toResponseDTO(usuario)
             
             res.json({
                 message: "Usuario autenticado",
