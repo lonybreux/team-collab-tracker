@@ -5,7 +5,7 @@ import ProyectoService from "../services/proyecto.service.js";
 import ProyectoRepository from "../repositories/proyecto.repository.js";
 import UsuariosProyectosRepository from "../repositories/usuarios_proyectos.repository.js";
 import schemaValidation from "../middlewares/validator.middleware.js";
-import { proyectoIdParamsSchema } from "../validators/auth.validator.js";
+import { proyectoIdParamsSchema, createProyectoSchema } from "../validators/proyecto.validator.js";
 
 const router = Router()
 
@@ -15,7 +15,7 @@ const proyectoService = new ProyectoService(proyectoRepository, usuariosProyecto
 const proyectoController = new ProyectoController(proyectoService)
 
 router.get('/', authMiddleware, proyectoController.getProyectos)
-router.post('/', authMiddleware, proyectoController.createProyecto)
+router.post('/', authMiddleware, schemaValidation(createProyectoSchema), proyectoController.createProyecto)
 router.delete('/:id', authMiddleware, schemaValidation(proyectoIdParamsSchema, 'params'), proyectoController.deleteProyecto)
 
 export default router
