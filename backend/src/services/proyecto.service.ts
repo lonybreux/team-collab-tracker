@@ -13,7 +13,7 @@ export default class ProyectoService {
         return await this.proyectoRepository.findById(id)
     }
 
-    public async obtenerProyectosPorIdUsuario(id: string): Promise<IUsuariosProyectos[]> {
+    public async obtenerProyectosPorIdUsuario(id: string): Promise<IProyecto[]> {
 
         return await this.usuariosProyectosRepository.findByIdUsuario(id)
 
