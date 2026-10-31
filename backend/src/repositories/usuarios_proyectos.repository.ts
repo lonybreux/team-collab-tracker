@@ -1,4 +1,5 @@
 import prisma from "../config/db.js";
+import type { IProyecto } from "../models/proyecto.model.js";
 import type { IUsuariosProyectos, IUsuariosProyectosCreateDTO } from "../models/usuarios_proyectos.model.js";
 import type IRepository from "./repository.interface.js";
 
@@ -10,12 +11,15 @@ export default class UsuariosProyectosRepository implements IRepository<IUsuario
         })
     }
 
-    public findByIdUsuario(id: string): Promise<IUsuariosProyectos[]> {
-        return prisma.usuarios_proyectos.findMany({
-            where: {
-                id_usuario: id
+    public async findByIdUsuario(id: string): Promise<IProyecto[]> {
+        const filas = await prisma.usuarios_proyectos.findMany({
+            where: { id_usuario: id},
+            include: {
+                proyectos: true
             }
         })
+
+        return filas.map(fila => fila.proyectos)
     }
 
     public findByIdProyecto(id: string): Promise<IUsuariosProyectos[] | null> {
