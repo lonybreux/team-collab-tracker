@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 
 import AuthService from "../services/auth.service.js";
-import type { IUsuario, IUsuarioCrearDTO, IUsuarioResponseDTO } from "../models/usuario.model.js";
+import type { IUsuario, IUsuarioCreateGoogleDTO, IUsuarioRequestDTO, IUsuarioResponseDTO } from "../models/usuario.model.js";
 import env from "../config/env.js";
 import { AppError } from "../errors/app.error.js";
 
@@ -22,7 +22,7 @@ export default class AuthController {
     public register = async(req: Request, res: Response): Promise<void> => {
         
         try {
-            const usuario: IUsuarioCrearDTO = req.body
+            const usuario: IUsuarioRequestDTO = req.body
 
             const usuarioCreated: IUsuario = await this.authService.registrarUsuarioLocal(usuario)
 
@@ -227,14 +227,14 @@ export default class AuthController {
                 return
             }
 
-            const usuarioGoogle: IUsuarioCrearDTO = {
+            const usuarioGoogle: IUsuarioCreateGoogleDTO = {
                 nombre: payload.name || 'UsuarioGoogle',
                 email: payload.email,
-                contrasena: '',
-                foto_perfil: payload.picture || null
+                foto_perfil: payload.picture || null,
+                provider_id: payload.sub
             }
 
-            const { token } = await this.authService.accesoGoogle(usuarioGoogle, payload.sub)
+            const { token } = await this.authService.accesoGoogle(usuarioGoogle)
 
             res.cookie('session', token,{
                 httpOnly: true,
